@@ -234,7 +234,7 @@ body:has(#nl-badge-frame) #toast{bottom:calc(190px + env(safe-area-inset-bottom,
       <button class="btn" id="createBtn" type="submit"></button>
     </form>
     <section class="sec">
-      <h2 id="listTitle"></h2>
+      <div class="frow" style="justify-content:space-between;align-items:center"><h2 id="listTitle"></h2><button class="mini" id="myLink" type="button">Мои папки на другом устройстве</button></div>
       <div class="grid" id="list"></div>
       <div class="emptyHome" id="emptyList" hidden></div>
     </section>
@@ -242,7 +242,7 @@ body:has(#nl-badge-frame) #toast{bottom:calc(190px + env(safe-area-inset-bottom,
       <h2>Доски без папки</h2>
       <div class="grid" id="looseList"></div>
     </section>
-    <div class="frow"><a class="btn ghost" href="watch.html">Киновечер: смотреть видео вместе</a><a class="btn ghost" href="italiano.html">Итальянский: правила и карточки</a></div>
+    <div class="frow"><a class="btn ghost" href="watch.html">Киновечер: смотреть видео вместе</a><a class="btn ghost" href="italiano.html">Итальянский: правила и карточки</a><a class="btn ghost" href="russo.html" lang="it">Russo: corso per italiani</a></div>
   </div>
 </main>
 
@@ -443,9 +443,35 @@ if(CFG.url&&CFG.key&&window.supabase&&window.supabase.createClient){
 /* ============ home & folders ============ */
 const home=$('#home'),boardView=$('#boardView');
 const myBoards=()=>LS.get('vatman.myboards',[]);
-const saveMy=l=>LS.set('vatman.myboards',l);
+const saveMy=l=>{LS.set('vatman.myboards',l);acctPush()};
 const myFolders=()=>LS.get('vatman.myfolders',[]);
-const saveFolders=l=>LS.set('vatman.myfolders',l);
+const saveFolders=l=>{LS.set('vatman.myfolders',l);acctPush()};
+/* личный список папок: хранится в базе под секретным ключом, открывается на любом устройстве по личной ссылке */
+let ACCT=LS.get('vatman.acct',null);
+if(!ACCT){ACCT='acct'+uid()+uid()+uid();LS.set('vatman.acct',ACCT)}
+const acctItem=()=>ACCT+'-lists';
+const tomb=()=>LS.get('vatman.removed',{});
+function forget(id){const t=tomb();t[id]=Date.now();LS.set('vatman.removed',t)}
+let acctT=0,acctReady=false;
+function acctPush(){if(!B||!B.shared||!acctReady)return;clearTimeout(acctT);acctT=setTimeout(async()=>{
+  try{await B.upsert(ACCT,[{id:acctItem(),type:'acct',folders:LS.get('vatman.myfolders',[]),boards:LS.get('vatman.myboards',[]),removed:tomb(),updated:Date.now()}])}catch(e){console.error(e)}
+},700)}
+function mergeLists(a,b,rm){
+  const m=new Map();
+  for(const x of [...(a||[]),...(b||[])]){if(!x||!x.id||rm[x.id])continue;const o=m.get(x.id);m.set(x.id,o?{...o,...x,owner:o.owner||x.owner,opened:Math.max(o.opened||0,x.opened||0)}:x)}
+  return [...m.values()];
+}
+async function acctPull(){
+  if(!B||!B.shared)return;
+  try{
+    await B.createBoard(ACCT,'Мои папки (служебная)').catch(()=>{});
+    const list=await B.loadItems(ACCT),it=list.find(x=>x&&x.id===acctItem());
+    const rm={...tomb(),...((it&&it.removed)||{})};LS.set('vatman.removed',rm);
+    LS.set('vatman.myfolders',mergeLists(it&&it.folders,LS.get('vatman.myfolders',[]),rm));
+    LS.set('vatman.myboards',mergeLists(it&&it.boards,LS.get('vatman.myboards',[]),rm));
+    acctReady=true;acctPush();
+  }catch(e){console.error(e)}
+}
 function touchIn(get,save,id,name,owner){
   const l=get();let e=l.find(b=>b.id===id);
   if(!e){e={id,name,owner:!!owner,opened:Date.now()};l.push(e)}
@@ -474,6 +500,7 @@ function card({id,name,href,meta,kind,delLabel,delAsk}){
 function renderHome(){
   const root=homeView.kind==='root';
   $('#rootHead').hidden=!root;$('#folderHead').hidden=root;
+  $('#myLink').hidden=!root||!B.shared;
   $('#newName').placeholder=root?'Название папки, например «Ваня»':'Название доски, например «Идеи на лето»';
   $('#createBtn').textContent=root?'Создать папку':'Создать доску';
   let html='';
@@ -505,13 +532,14 @@ async function onCardAction(e){
   if(armedDel!==kind+id){arm(kind+id);return}
   armedDel=null;
   try{
-    if(kind==='f'){const f=myFolders().find(x=>x.id===id);if(f&&f.owner)await B.deleteFolder(id);saveFolders(myFolders().filter(x=>x.id!==id));toast(f&&f.owner?'Папка удалена':'Папка убрана из списка')}
-    else if(kind==='b'){const b=myBoards().find(x=>x.id===id);if(b&&b.owner)await B.deleteBoard(id);saveMy(myBoards().filter(x=>x.id!==id));toast(b&&b.owner?'Доска удалена':'Доска убрана из списка')}
+    if(kind==='f'){const f=myFolders().find(x=>x.id===id);if(f&&f.owner)await B.deleteFolder(id);forget(id);saveFolders(myFolders().filter(x=>x.id!==id));toast(f&&f.owner?'Папка удалена':'Папка убрана из списка')}
+    else if(kind==='b'){const b=myBoards().find(x=>x.id===id);if(b&&b.owner)await B.deleteBoard(id);forget(id);saveMy(myBoards().filter(x=>x.id!==id));toast(b&&b.owner?'Доска удалена':'Доска убрана из списка')}
     else{await B.deleteBoard(id);homeView.data.boards=homeView.data.boards.filter(x=>x.id!==id);toast('Доска удалена')}
   }catch(err){toast('Не удалось удалить: '+errText(err),4000)}
   renderHome();
 }
 $('#list').addEventListener('click',onCardAction);
+$('#myLink').onclick=()=>{const u=location.href.split('#')[0]+'#/acct/'+ACCT;copyText(u,'Личная ссылка скопирована. Откройте её на телефоне или другом компьютере, и там появятся все ваши папки. Никому её не отправляйте.')};
 $('#looseList').addEventListener('click',onCardAction);
 $('#createForm').addEventListener('submit',async e=>{
   e.preventDefault();
@@ -540,7 +568,7 @@ $('#delFolder').onclick=async()=>{
   if(armedDel!=='folder'){arm('folder');return}
   armedDel=null;const id=homeView.id;
   try{await B.deleteFolder(id)}catch(e){toast('Не удалось удалить: '+errText(e),4000);renderHome();return}
-  saveFolders(myFolders().filter(x=>x.id!==id));toast('Папка удалена');location.hash='#';
+  forget(id);saveFolders(myFolders().filter(x=>x.id!==id));toast('Папка удалена');location.hash='#';
 };
 function setBanner(text,err){const el=$('#modeBanner');el.hidden=!text;el.textContent=text||'';el.classList.toggle('err',!!err)}
 async function checkBase(){
@@ -561,6 +589,7 @@ function showHomeShell(){
 async function showHome(){
   showHomeShell();homeView={kind:'root'};document.title='Ватман';
   renderHome();checkBase();
+  await acctPull();if(homeView.kind==='root'&&!home.hidden)renderHome();
   const fl=myFolders(),bl=myBoards();
   try{
     if(fl.length){const n=await B.folderNames(fl.map(f=>f.id));saveFolders(myFolders().filter(f=>n[f.id]!=null).map(f=>({...f,name:n[f.id]})))}
@@ -1295,6 +1324,10 @@ function notice(title,text){
 }
 function route(){
   const h=location.hash;let m;
+  if((m=h.match(/^#\/acct\/([a-z0-9]{20,64})$/))){
+    if(m[1]!==ACCT){ACCT=m[1];LS.set('vatman.acct',ACCT);acctReady=false;toast('Ваши папки подключены на этом устройстве',3500)}
+    history.replaceState(null,'',location.pathname);
+  }
   if((m=h.match(/^#\/b\/([A-Za-z0-9_-]{6,64})$/))){if(!board||board.id!==m[1])openBoard(m[1])}
   else if((m=h.match(/^#\/f\/([A-Za-z0-9_-]{6,64})$/)))showFolder(m[1]);
   else showHome();

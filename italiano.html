@@ -91,6 +91,10 @@ h3{margin:8px 0 0;font:800 13px/1 var(--ui);text-transform:uppercase;letter-spac
 .opt.wrong{background:var(--bad);color:#fff;border-color:var(--bad)}
 .fb{font-size:14px}
 .fb b{font-family:var(--it);font-weight:600}
+.fb .rulebtn{margin-top:8px;padding:7px 12px;font-size:13px}
+.ans .idk{padding:9px 12px;font-size:14px}
+.sheet>div.rulebox{width:min(700px,100%);max-height:86vh;overflow:auto}
+.rulebox .rule{padding:4px 16px}
 .score{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .score strong{font:800 32px/1 var(--ui);font-variant-numeric:tabular-nums}
 .score span{color:var(--muted);flex:1;min-width:160px}
@@ -133,6 +137,14 @@ h3{margin:8px 0 0;font:800 13px/1 var(--ui);text-transform:uppercase;letter-spac
 .toc a{font-size:13px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:5px 10px;border-radius:99px;text-decoration:none}
 .rsec{display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}
 .rsec h2{font-size:22px}
+.tbl{padding:4px 0 2px}
+.tbl .tablewrap{margin:0}
+.tbl table{font-size:15px}
+.tbl th[scope="row"]{font:700 13px/1.3 var(--ui);color:var(--fg);text-transform:none;letter-spacing:0;position:sticky;left:0;background:var(--panel);white-space:nowrap}
+.tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--bg)}
+.tbl td b{color:var(--accent);font-weight:700}
+.tbl th,.tbl td{padding:8px 12px;vertical-align:middle}
+.tnote{margin:10px 16px 12px;font-size:14px;color:var(--muted)}
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
 .tcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-width:0}
 .tcard:hover{border-color:var(--accent)}
@@ -150,6 +162,15 @@ h3{margin:8px 0 0;font:800 13px/1 var(--ui);text-transform:uppercase;letter-spac
 @media (max-width:520px){.phr div{flex-wrap:wrap}.phr span{flex-basis:100%}}
 .decksel{font-size:15px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);max-width:100%}
 .lvtag{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.06em}
+.home{font-size:14px;font-weight:700;color:var(--muted);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:99px;padding:6px 12px}
+.home:hover{color:var(--fg)}
+.hero{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:16/7;max-width:100%;border:1px solid var(--line)}
+.hero svg{display:block;width:100%;height:100%}
+.hero figcaption{position:absolute;left:12px;bottom:10px;background:rgb(20 24 22 / .62);color:#fff;font-size:13px;font-weight:700;padding:4px 10px;border-radius:99px}
+.tcard{padding:0;overflow:hidden}
+.tcard .pic{aspect-ratio:16/9;display:block;border-bottom:1px solid var(--line)}
+.tcard .pic svg{display:block;width:100%;height:100%}
+.tcard .tbody{padding:12px 14px 14px;display:flex;flex-direction:column;gap:4px}
 #toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,8px);background:var(--fg);color:var(--bg);font-size:14px;font-weight:600;padding:9px 16px;border-radius:99px;opacity:0;transition:.2s;pointer-events:none;width:max-content;max-width:calc(100vw - 32px);text-align:center;z-index:30}
 #toast.show{opacity:1;transform:translate(-50%,0)}
 @media (max-width:520px){h2{font-size:23px}.card .front{font-size:28px}.stat{width:100%;order:3}}
@@ -160,6 +181,7 @@ body:has(#nl-badge-frame){padding-bottom:calc(90px + env(safe-area-inset-bottom,
 <body>
 <div class="wrap">
   <header class="top">
+    <a class="home" href="index.html" title="Вернуться в Ватман">← Ватман</a>
     <a class="brand" href="italiano.html"><b>Italiano</b><i>passo dopo passo</i></a>
     <div class="stat" id="stat"></div>
     <button class="icon" id="syncBtn" type="button" title="Прогресс на другом устройстве"><span class="dot" id="syncDot"></span>Синхронизация</button>
@@ -168,6 +190,7 @@ body:has(#nl-badge-frame){padding-bottom:calc(90px + env(safe-area-inset-bottom,
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" data-tab="gram" aria-selected="true">Грамматика</button>
     <button class="tab" role="tab" data-tab="rules" aria-selected="false">Правила</button>
+    <button class="tab" role="tab" data-tab="tables" aria-selected="false">Таблицы</button>
     <button class="tab" role="tab" data-tab="themes" aria-selected="false">Темы</button>
     <button class="tab" role="tab" data-tab="cards" aria-selected="false">Карточки</button>
     <button class="tab" role="tab" data-tab="train" aria-selected="false">Тренировка</button>
@@ -183,6 +206,13 @@ body:has(#nl-badge-frame){padding-bottom:calc(90px + env(safe-area-inset-bottom,
     <div class="row"><button class="btn ghost" id="syncClose" type="button">Закрыть</button><button class="btn" id="syncCopy" type="button">Скопировать</button></div>
   </div>
 </div>
+<div class="sheet" id="ruleSheet" hidden>
+  <div class="rulebox" role="dialog" aria-modal="true" aria-labelledby="ruleTitle">
+    <h4 id="ruleTitle"></h4>
+    <div class="rule" id="ruleBody"></div>
+    <div class="row"><button class="btn ghost" id="ruleGo" type="button">Открыть тему целиком</button><button class="btn" id="ruleClose" type="button">Понятно</button></div>
+  </div>
+</div>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script src="config.js"></script>
@@ -196,6 +226,8 @@ body:has(#nl-badge-frame){padding-bottom:calc(90px + env(safe-area-inset-bottom,
 <script src="ita-expl.js"></script>
 <script src="ita-themes1.js"></script>
 <script src="ita-themes2.js"></script>
+<script src="ita-art.js"></script>
+<script src="ita-tables.js"></script>
 <script>
 (()=>{
 const $=s=>document.querySelector(s);
@@ -257,6 +289,13 @@ $('#syncCopy').onclick=async()=>{try{await navigator.clipboard.writeText($('#syn
 const lvl=()=>LEVELS.find(l=>l.id===P.level)||LEVELS[0];
 LEVELS.forEach(l=>l.topics.forEach(t=>t.ex.forEach((x,i)=>{const e=ITA.expl&&ITA.expl[t.id]&&ITA.expl[t.id][i];if(e)x[3]=e})));
 const THEMES=ITA.themes||[];
+const TOPIC={};LEVELS.forEach(l=>l.topics.forEach(t=>TOPIC[t.id]=t));
+let ruleId=null;
+document.addEventListener('click',e=>{const b=e.target.closest('[data-rule-open]');if(!b)return;const t=TOPIC[b.dataset.ruleOpen];if(!t)return;ruleId=t.id;$('#ruleTitle').textContent=t.t;$('#ruleBody').innerHTML=t.b.replace(/<table>/g,'<div class="tablewrap"><table>').replace(/<\/table>/g,'</table></div>');$('#ruleSheet').hidden=false;$('#ruleClose').focus()});
+$('#ruleClose').onclick=()=>$('#ruleSheet').hidden=true;
+$('#ruleSheet').onclick=e=>{if(e.target.id==='ruleSheet')e.currentTarget.hidden=true};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#ruleSheet').hidden)$('#ruleSheet').hidden=true});
+$('#ruleGo').onclick=()=>{$('#ruleSheet').hidden=true;if(!ruleId)return;tab='gram';LS.set('ita.tab',tab);route={v:'topic',id:ruleId};render();scrollTo(0,0)};
 const deckOfLevel=l=>({id:'L:'+l.id,name:'Слова уровня '+l.id,words:l.words,prefix:l.id});
 const deckOfTheme=t=>({id:'T:'+t.id,name:'Тема: '+t.t,words:t.words,prefix:'T:'+t.id});
 function curDeck(){const d=P.deck||'';if(d.startsWith('T:')){const t=THEMES.find(x=>'T:'+x.id===d);if(t)return deckOfTheme(t)}return deckOfLevel(lvl())}
@@ -306,6 +345,7 @@ function render(){
   const v=$('#view');
   if(tab==='gram')route.v==='topic'?renderTopic(v):renderTopics(v);
   else if(tab==='rules')renderRules(v);
+  else if(tab==='tables')renderTables(v);
   else if(tab==='themes')route.v==='theme'?renderTheme(v):renderThemes(v);
   else if(tab==='cards')route.v==='session'?renderSession(v):route.v==='words'?renderWords(v):renderDeck(v);
   else renderTrain(v);
@@ -314,33 +354,35 @@ function render(){
 /* ============ grammar ============ */
 function renderTopics(v){
   const l=lvl();
-  v.innerHTML=`<div class="list">${l.topics.map((t,i)=>{const r=P.topics[t.id];const cls=!r?'':r.best===r.total?'done':'part';
+  v.innerHTML=heroOf(l)+`<div class="list" style="margin-top:14px">${l.topics.map((t,i)=>{const r=P.topics[t.id];const cls=!r?'':r.best===r.total?'done':'part';
     return `<button class="topic" data-t="${t.id}"><span class="num">${i+1}</span><span class="tt">${esc(t.t)}</span><span class="badge ${cls}">${r?r.best+' из '+r.total:t.ex.length+' '+plural(t.ex.length,'задание','задания','заданий')}</span></button>`}).join('')}</div>`;
   v.querySelector('.list').onclick=e=>{const b=e.target.closest('[data-t]');if(!b)return;route={v:'topic',id:b.dataset.t};render();scrollTo(0,0)};
 }
-function exHTML(x,i){
+function exHTML(x,i,tid){
   const [q,,opts]=x;
   const qh=esc(q).replace(/___/g,'<span class="blank"></span>');
   const ans=opts?`<div class="ans">${opts.map(o=>`<button class="opt" type="button" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div>`
-    :`<form class="ans"><input autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Ответ"><button class="btn ghost">Проверить</button></form>`;
-  return `<div class="ex" data-i="${i}"><div class="q">${qh}</div>${ans}<div class="fb" hidden></div></div>`;
+    :`<form class="ans"><input autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Ответ"><button class="btn ghost">Проверить</button><button class="btn ghost idk" type="button">Не знаю</button></form>`;
+  return `<div class="ex" data-i="${i}"${tid?` data-rule="${esc(tid)}"`:''}><div class="q">${qh}</div>${ans}<div class="fb" hidden></div></div>`;
 }
 function feedback(card,x,res,given){
   const [,a,,expl]=x,fb=card.querySelector('.fb'),first=String(a).split('/')[0];
   card.classList.add(res==='bad'?'bad':'ok');card.dataset.done=res;
   let t;
-  if(res==='bad')t=`Вы ответили: <b>${esc(given||'')}</b>. Правильно: <b>${esc(first)}</b>.`;
+  if(res==='bad')t=given?`Вы ответили: <b>${esc(given)}</b>. Правильно: <b>${esc(first)}</b>.`:`Правильный ответ: <b>${esc(first)}</b>.`;
   else if(res==='accent')t=`Почти верно, проверьте ударение: правильно <b>${esc(first)}</b>.`;
   else t='Верно!';
   if(expl)t+=(res==='bad'?'<br>Почему: ':' ')+esc(expl);
-  fb.innerHTML=t;fb.hidden=false;
   card.querySelectorAll('input,button').forEach(el=>el.disabled=true);
+  if(card.dataset.rule&&TOPIC[card.dataset.rule])t+=`<br><button class="btn ghost rulebtn" type="button" data-rule-open="${esc(card.dataset.rule)}">📘 Правило: ${esc(TOPIC[card.dataset.rule].t)}</button>`;
+  fb.innerHTML=t;fb.hidden=false;
 }
 function wireExercises(root,list,onDone){
   root.querySelectorAll('.ex').forEach(card=>{
     const x=list[+card.dataset.i];
     const f=card.querySelector('form');
     if(f)f.onsubmit=e=>{e.preventDefault();const inp=f.querySelector('input');const r=check(inp.value,x[1]);if(!r){inp.focus();return}feedback(card,x,r,inp.value.trim());onDone()};
+    const idk=card.querySelector('.idk');if(idk)idk.onclick=()=>{feedback(card,x,'bad','');onDone()};
     card.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
       const r=check(b.dataset.o,x[1]);
       card.querySelectorAll('.opt').forEach(o=>{if(check(o.dataset.o,x[1])==='ok')o.classList.add('right')});
@@ -360,7 +402,7 @@ function renderTopic(v){
     <h2>${esc(t.t)}</h2>
     <div class="rule">${body}</div>
     <h3>Упражнения</h3>
-    <div class="exs">${t.ex.map(exHTML).join('')}</div>
+    <div class="exs">${t.ex.map((x,i)=>exHTML(x,i,t.id)).join('')}</div>
     <div class="score" id="score" hidden></div></div>`;
   $('#back').onclick=()=>{route={v:'list'};render()};
   const exs=v.querySelector('.exs');
@@ -443,11 +485,14 @@ function renderWords(v){
   $('#back').onclick=()=>{route={v:'list'};render()};
 }
 
+const CITY={A1:'Пиза',A2:'Венеция',B1:'Рим',B2:'Флоренция',C1:'Побережье Амальфи'};
+const ART=ITA.art||{levels:{},themes:{}};
+const heroOf=l=>ART.levels[l.id]?`<figure class="hero" style="margin:0">${ART.levels[l.id]}<figcaption>${esc(l.id)} · ${esc(CITY[l.id]||'')}</figcaption></figure>`:'';
 /* ============ rules ============ */
 function tableWrap(h){return h.replace(/<table>/g,'<div class="tablewrap"><table>').replace(/<\/table>/g,'</table></div>')}
 function renderRules(v){
   const l=lvl();
-  v.innerHTML=`<div class="wrap" style="gap:18px">
+  v.innerHTML=`<div class="wrap" style="gap:18px">${heroOf(l)}
     <p style="margin:0;color:var(--muted)">Все правила уровня ${esc(l.id)} на одной странице. Нажмите на тему, чтобы перейти к ней, или откройте упражнения под правилом.</p>
     <nav class="toc">${l.topics.map(t=>`<a href="#r-${t.id}" data-jump="${t.id}">${esc(t.t)}</a>`).join('')}</nav>
     ${l.topics.map(t=>`<section class="rsec" id="r-${t.id}"><h2>${esc(t.t)}</h2><div class="rule">${tableWrap(t.b)}</div>
@@ -457,11 +502,23 @@ function renderRules(v){
   v.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{tab='gram';LS.set('ita.tab',tab);route={v:'topic',id:b.dataset.go};render();scrollTo(0,0)});
 }
 
+/* ============ tables ============ */
+const cellHTML=c=>{const s=String(c);const i=s.indexOf('|');return i<0?esc(s):esc(s.slice(0,i))+'<b>'+esc(s.slice(i+1))+'</b>'};
+function renderTables(v){
+  const T=ITA.tables||[],lg=ITA.tablesLang||'it';
+  v.innerHTML=`<div class="wrap" style="gap:18px">
+    <p style="margin:0;color:var(--muted)">Вся грамматика в сводных таблицах: удобно держать открытыми во время заданий. Окончания выделены жирным.</p>
+    <nav class="toc">${T.map(t=>`<a href="#tb-${t.id}" data-tj="${t.id}">${esc(t.t)}</a>`).join('')}</nav>
+    ${T.map(t=>`<section class="rsec" id="tb-${t.id}"><h2>${esc(t.t)}</h2><div class="rule tbl"><div class="tablewrap"><table><tr>${t.head.map(h=>`<th>${esc(h)}</th>`).join('')}</tr>${t.rows.map(r=>`<tr>${r.map((c,j)=>j===0?`<th scope="row">${esc(c)}</th>`:`<td lang="${lg}">${cellHTML(c)}</td>`).join('')}</tr>`).join('')}</table></div>${t.note?`<p class="tnote">${esc(t.note)}</p>`:''}</div></section>`).join('')}
+  </div>`;
+  v.querySelectorAll('[data-tj]').forEach(a=>a.onclick=e=>{e.preventDefault();document.getElementById('tb-'+a.dataset.tj).scrollIntoView({behavior:'smooth'})});
+}
+
 /* ============ themes ============ */
 function renderThemes(v){
   v.innerHTML=`<div class="wrap" style="gap:12px"><p style="margin:0;color:var(--muted)">Уроки по темам: текст с переводом, полезные фразы, слова для карточек и задания. Уровень указан для ориентира, уроки открыты все.</p>
     <div class="tgrid">${THEMES.map(t=>{const r=P.topics['T:'+t.id];const cls=!r?'':r.best===r.total?'done':'part';
-      return `<button class="tcard" data-th="${t.id}"><span class="lvtag">${esc(t.lvl)}</span><b>${esc(t.t)}</b><i lang="it">${esc(t.it)}</i><span class="badge ${cls}">${r?'задания: '+r.best+' из '+r.total:'не начат'}</span></button>`}).join('')}</div></div>`;
+      return `<button class="tcard" data-th="${t.id}"><span class="pic">${ART.themes[t.id]||''}</span><span class="tbody"><span class="lvtag">${esc(t.lvl)}</span><b>${esc(t.t)}</b><i lang="it">${esc(t.it)}</i><span class="badge ${cls}">${r?'задания: '+r.best+' из '+r.total:'не начат'}</span></span></button>`}).join('')}</div></div>`;
   v.querySelector('.tgrid').onclick=e=>{const b=e.target.closest('[data-th]');if(!b)return;route={v:'theme',id:b.dataset.th};render();scrollTo(0,0)};
 }
 function renderTheme(v){
@@ -469,6 +526,7 @@ function renderTheme(v){
   const words=wordsOf(deckOfTheme(t)),idx=THEMES.indexOf(t),next=THEMES[idx+1];
   v.innerHTML=`<div class="wrap" style="gap:14px">
     <button class="back" id="back">← Все темы</button>
+    ${ART.themes[t.id]?`<figure class="hero" style="margin:0">${ART.themes[t.id]}</figure>`:''}
     <div><span class="lvtag">${esc(t.lvl)}</span><h2>${esc(t.t)}</h2><i lang="it" class="it" style="background:none;padding:0;color:var(--muted)">${esc(t.it)}</i></div>
     <h3>Текст</h3>
     <div class="reading"><div class="it-text" lang="it">${esc(t.text)}</div>
@@ -480,7 +538,7 @@ function renderTheme(v){
     <div class="words">${words.map(w=>`<div class="w${P.cards[w.key]&&P.cards[w.key].b>=4?' learned':''}"><b>${esc(w.it)}</b><span>${esc(w.ru)}</span></div>`).join('')}</div>
     <button class="btn" id="learn" style="align-self:flex-start">Учить эти слова в карточках</button>
     <h3>Задания</h3>
-    <div class="exs">${t.ex.map(exHTML).join('')}</div>
+    <div class="exs">${t.ex.map((x,i)=>exHTML(x,i)).join('')}</div>
     <div class="score" id="score" hidden></div></div>`;
   $('#back').onclick=()=>{route={v:'list'};render()};
   $('#tr').onclick=()=>{const r=$('#ru');r.hidden=!r.hidden;$('#tr').textContent=r.hidden?'Показать перевод':'Скрыть перевод'};
@@ -502,10 +560,10 @@ function renderTheme(v){
 /* ============ training ============ */
 function renderTrain(v){
   const l=lvl();
-  const pool=[];l.topics.forEach(t=>t.ex.forEach(x=>pool.push({x,t:t.t})));
+  const pool=[];l.topics.forEach(t=>t.ex.forEach(x=>pool.push({x,t:t.t,id:t.id})));
   const pick=pool.sort(()=>Math.random()-.5).slice(0,10);
   v.innerHTML=`<div class="wrap" style="gap:12px"><p style="margin:0;color:var(--muted)">10 случайных заданий из всех тем уровня ${esc(l.id)}. Над каждым написано, к какой теме оно относится.</p>
-    <div class="exs">${pick.map((p,i)=>exHTML(p.x,i).replace('<div class="q">',`<div style="font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">${esc(p.t)}</div><div class="q">`)).join('')}</div>
+    <div class="exs">${pick.map((p,i)=>exHTML(p.x,i,p.id).replace('<div class="q">',`<div style="font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">${esc(p.t)}</div><div class="q">`)).join('')}</div>
     <div class="score" id="score" hidden></div></div>`;
   const exs=v.querySelector('.exs');
   wireExercises(exs,pick.map(p=>p.x),()=>{
