@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F3F5F0">
+<title>Итальянский</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%234E7A2E'/%3E%3Ctext x='12' y='16.5' font-size='12' font-family='Arial' font-weight='700' text-anchor='middle' fill='%23F4D35E'%3Eit%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400;1,7..72,500&display=swap">
+<style>
+/* Layout: a single study column (max 760px); top bar with level chips and three tabs; topic and card views replace the list */
+:root{
+  --bg:#F3F5F0; --panel:#FFFFFF; --line:#DDE3DA; --fg:#1B2421; --muted:#5E6B66;
+  --accent:#4E7A2E; --accent-soft:#E6EFDD; --on-accent:#FFFFFF; --lemon:#F4D35E; --lemon-soft:#FBF1C8;
+  --ok:#2E8B57; --ok-soft:#E1F3E8; --bad:#C2413A; --bad-soft:#FBE6E4;
+  --shadow:0 1px 2px rgb(27 36 33 / .06),0 8px 24px rgb(27 36 33 / .07);
+  --ui:"Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --it:"Literata", Georgia, "Times New Roman", serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#121614; --panel:#1A201D; --line:#2B3430; --fg:#E7ECE8; --muted:#9AA8A1;
+  --accent:#9BCB6B; --accent-soft:#25331D; --on-accent:#10170B; --lemon:#E8C547; --lemon-soft:#3A3318;
+  --ok:#6CCB91; --ok-soft:#1B3326; --bad:#FF8B80; --bad-soft:#3A1F1C;
+  --shadow:0 1px 2px rgb(0 0 0 / .4),0 8px 24px rgb(0 0 0 / .3);
+  color-scheme:dark;
+}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font:16px/1.55 var(--ui);-webkit-text-size-adjust:100%;
+  padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(48px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+button,input{font:inherit;color:inherit}
+[hidden]{display:none!important}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:10px;margin-right:auto;text-decoration:none;color:var(--fg)}
+.brand b{font:800 26px/1 var(--ui);letter-spacing:-.03em}
+.brand i{font:italic 500 17px/1 var(--it);color:var(--muted)}
+.stat{font-size:13px;color:var(--muted);display:flex;gap:12px;align-items:center;font-variant-numeric:tabular-nums}
+.stat span b{color:var(--fg)}
+.icon{border:1px solid var(--line);background:var(--panel);border-radius:10px;height:36px;padding:0 10px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;font-weight:600}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.dot.ok{background:var(--ok)} .dot.err{background:var(--bad)}
+.levels{display:flex;gap:6px;flex-wrap:wrap}
+.lv{border:1px solid var(--line);background:var(--panel);border-radius:99px;padding:6px 14px;font-weight:700;font-size:14px;cursor:pointer;display:flex;gap:6px;align-items:baseline}
+.lv small{font-weight:500;color:var(--muted);font-size:12px}
+.lv[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.lv[aria-pressed="true"] small{color:inherit;opacity:.8}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;flex:none}
+.tab{border:0;background:none;padding:10px 14px;font-weight:700;font-size:15px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--fg);border-color:var(--accent)}
+.btn{border:0;border-radius:11px;padding:11px 18px;font-weight:700;background:var(--accent);color:var(--on-accent);cursor:pointer;font-size:15px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn.ghost{background:var(--panel);color:var(--fg);border:1px solid var(--line)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn:focus-visible,.lv:focus-visible,.tab:focus-visible,.topic:focus-visible,.opt:focus-visible,.icon:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.list{display:flex;flex-direction:column;gap:8px}
+.topic{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;text-align:left;width:100%}
+.topic:hover{border-color:var(--accent)}
+.num{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:13px}
+.topic .tt{flex:1;min-width:0;font-weight:700}
+.badge{font-size:12px;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--bg);color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.badge.done{background:var(--ok-soft);color:var(--ok)}
+.badge.part{background:var(--lemon-soft);color:var(--fg)}
+.back{border:0;background:none;color:var(--muted);font-weight:700;cursor:pointer;padding:0;align-self:flex-start;font-size:14px}
+h2{margin:0;font:800 28px/1.15 var(--ui);letter-spacing:-.02em;text-wrap:balance}
+h3{margin:8px 0 0;font:800 13px/1 var(--ui);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.rule{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:6px 20px}
+.rule p{max-width:68ch}
+.rule i[lang="it"],.it{font-family:var(--it);font-style:italic;background:var(--lemon-soft);padding:0 3px;border-radius:3px;font-size:1.03em}
+.rule table i[lang="it"]{background:none;padding:0}
+.tablewrap{overflow-x:auto;margin:12px 0}
+.rule table{border-collapse:collapse;font-size:14px;min-width:100%}
+.rule th,.rule td{border-bottom:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+.rule th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.rule td{font-family:var(--it)}
+.exs{display:flex;flex-direction:column;gap:10px;counter-reset:q}
+.ex{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.ex.ok{border-color:var(--ok);background:var(--ok-soft)}
+.ex.bad{border-color:var(--bad);background:var(--bad-soft)}
+.q{font-family:var(--it);font-size:18px;line-height:1.4}
+.q .blank{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--muted);margin:0 3px}
+.ans{display:flex;gap:8px;flex-wrap:wrap}
+.ans input{flex:1 1 200px;min-width:0;font-size:16px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);font-family:var(--it)}
+.ans input:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.opt{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 14px;cursor:pointer;font-family:var(--it);font-size:16px}
+.opt.right{background:var(--ok);color:#fff;border-color:var(--ok)}
+.opt.wrong{background:var(--bad);color:#fff;border-color:var(--bad)}
+.fb{font-size:14px}
+.fb b{font-family:var(--it);font-weight:600}
+.score{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.score strong{font:800 32px/1 var(--ui);font-variant-numeric:tabular-nums}
+.score span{color:var(--muted);flex:1;min-width:160px}
+
+/* cards */
+.deck{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.deck .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.nums{display:flex;gap:18px;flex-wrap:wrap}
+.nums div{display:flex;flex-direction:column}
+.nums b{font:800 28px/1 var(--ui);font-variant-numeric:tabular-nums}
+.nums span{font-size:13px;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:var(--panel);padding:7px 12px;font-weight:700;font-size:13px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.card{position:relative;min-height:260px;background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:28px 20px;text-align:center;cursor:pointer;user-select:none}
+.card .front{font:500 34px/1.2 var(--it);overflow-wrap:anywhere}
+.card .tr{font:600 22px/1.3 var(--ui);color:var(--accent);overflow-wrap:anywhere}
+.card .hint{font-size:13px;color:var(--muted)}
+.card .say{position:absolute;right:12px;top:12px}
+.boxes{position:absolute;left:14px;top:14px;display:flex;gap:3px}
+.boxes i{width:7px;height:7px;border-radius:50%;background:var(--line)}
+.boxes i.on{background:var(--accent)}
+.grade{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grade .btn{padding:14px}
+.grade .no{background:var(--bad)}
+.progressbar{height:6px;background:var(--line);border-radius:99px;overflow:hidden}
+.progressbar i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .3s}
+.words{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px}
+.w{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:flex;flex-direction:column;min-width:0}
+.w b{font:500 16px/1.3 var(--it);overflow-wrap:anywhere}
+.w span{font-size:13px;color:var(--muted)}
+.w.learned{border-color:var(--ok)}
+.sheet{position:fixed;inset:0;background:rgb(10 14 12 / .45);display:grid;place-items:center;padding:16px;z-index:20}
+.sheet>div{background:var(--panel);border-radius:18px;padding:20px;width:min(440px,100%);display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow)}
+.sheet h4{margin:0;font-size:18px}
+.sheet p{margin:0;color:var(--muted);font-size:14px}
+.sheet input{font-size:14px;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);width:100%}
+.sheet .row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.toc{display:flex;flex-wrap:wrap;gap:6px}
+.toc a{font-size:13px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:5px 10px;border-radius:99px;text-decoration:none}
+.rsec{display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}
+.rsec h2{font-size:22px}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.tcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-width:0}
+.tcard:hover{border-color:var(--accent)}
+.tcard b{font-size:16px}
+.tcard i{font-family:var(--it);color:var(--muted)}
+.tcard .badge{align-self:flex-start;margin-top:6px}
+.reading{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 20px;display:flex;flex-direction:column;gap:10px}
+.reading .it-text{font:400 18px/1.65 var(--it);white-space:pre-line}
+.reading .ru-text{color:var(--muted);white-space:pre-line;border-top:1px dashed var(--line);padding-top:10px}
+.reading .row{display:flex;gap:8px;flex-wrap:wrap}
+.phr{display:flex;flex-direction:column;gap:6px}
+.phr div{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;gap:10px;align-items:center}
+.phr b{font:500 16px/1.35 var(--it);flex:1;min-width:0}
+.phr span{color:var(--muted);font-size:14px;flex:1;min-width:0}
+@media (max-width:520px){.phr div{flex-wrap:wrap}.phr span{flex-basis:100%}}
+.decksel{font-size:15px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);max-width:100%}
+.lvtag{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.06em}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,8px);background:var(--fg);color:var(--bg);font-size:14px;font-weight:600;padding:9px 16px;border-radius:99px;opacity:0;transition:.2s;pointer-events:none;width:max-content;max-width:calc(100vw - 32px);text-align:center;z-index:30}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+@media (max-width:520px){h2{font-size:23px}.card .front{font-size:28px}.stat{width:100%;order:3}}
+@media (prefers-reduced-motion:reduce){#toast,.progressbar i{transition:none}}
+body:has(#nl-badge-frame){padding-bottom:calc(90px + env(safe-area-inset-bottom,0px))}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="italiano.html"><b>Italiano</b><i>passo dopo passo</i></a>
+    <div class="stat" id="stat"></div>
+    <button class="icon" id="syncBtn" type="button" title="Прогресс на другом устройстве"><span class="dot" id="syncDot"></span>Синхронизация</button>
+  </header>
+  <nav class="levels" id="levels" aria-label="Уровень"></nav>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-tab="gram" aria-selected="true">Грамматика</button>
+    <button class="tab" role="tab" data-tab="rules" aria-selected="false">Правила</button>
+    <button class="tab" role="tab" data-tab="themes" aria-selected="false">Темы</button>
+    <button class="tab" role="tab" data-tab="cards" aria-selected="false">Карточки</button>
+    <button class="tab" role="tab" data-tab="train" aria-selected="false">Тренировка</button>
+  </div>
+  <main id="view"></main>
+</div>
+
+<div class="sheet" id="syncSheet" hidden>
+  <div>
+    <h4>Прогресс на другом устройстве</h4>
+    <p id="syncText"></p>
+    <input id="syncUrl" readonly aria-label="Ссылка с вашим прогрессом">
+    <div class="row"><button class="btn ghost" id="syncClose" type="button">Закрыть</button><button class="btn" id="syncCopy" type="button">Скопировать</button></div>
+  </div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="config.js"></script>
+<script src="supabase.js"></script>
+<script src="ita-a1.js"></script>
+<script src="ita-a2.js"></script>
+<script src="ita-b1.js"></script>
+<script src="ita-b2.js"></script>
+<script src="ita-c1.js"></script>
+<script src="ita-extra.js"></script>
+<script src="ita-expl.js"></script>
+<script src="ita-themes1.js"></script>
+<script src="ita-themes2.js"></script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Math.random().toString(36).slice(2,10);
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let toastT;function toast(m,ms=2400){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),ms)}
+const DAY=864e5,today=()=>new Date().toISOString().slice(0,10);
+const LEVELS=ITA.levels;
+const plural=(n,a,b,c)=>{const m=n%10,h=n%100;return m===1&&h!==11?a:m>=2&&m<=4&&(h<10||h>=20)?b:c};
+
+/* ============ progress & sync ============ */
+let P=LS.get('ita.progress',null)||{v:1,updated:0,level:'A1',topics:{},cards:{},dir:'it',streak:{day:'',n:0}};
+P.topics=P.topics||{};P.cards=P.cards||{};
+const CFG=window.VATMAN_CONFIG||{};
+let sb=null;
+if(CFG.url&&CFG.key&&window.supabase&&window.supabase.createClient){try{sb=window.supabase.createClient(CFG.url.trim(),CFG.key.trim())}catch(e){}}
+let KEY=LS.get('ita.key',null);
+const hk=(location.hash.match(/^#sync-([a-z0-9]{16,64})$/)||[])[1];
+if(hk&&hk!==KEY){KEY=hk;LS.set('ita.key',KEY);P.updated=0}
+if(hk)history.replaceState(null,'',location.pathname);
+if(!KEY){KEY='ita'+uid()+uid()+uid();LS.set('ita.key',KEY)}
+function setDot(s){$('#syncDot').className='dot'+(s==='ok'?' ok':s==='err'?' err':'')}
+async function pull(){
+  if(!sb){setDot('err');return}
+  try{
+    await sb.rpc('create_board',{p_id:KEY,p_name:'Итальянский: прогресс'}).then(()=>{},()=>{});
+    const r=await sb.rpc('load_items',{p_board:KEY});
+    if(r.error)throw r.error;
+    const it=(r.data||[]).find(x=>x&&x.id==='progress');
+    if(it&&it.p&&(it.p.updated||0)>(P.updated||0)){P=it.p;P.topics=P.topics||{};P.cards=P.cards||{};LS.set('ita.progress',P);render()}
+    else if((P.updated||0)>((it&&it.p&&it.p.updated)||0))push();
+    setDot('ok');
+  }catch(e){console.error(e);setDot('err')}
+}
+let pushT;
+function save(){
+  P.updated=Date.now();
+  const d=today();if(P.streak.day!==d){const y=new Date(Date.now()-DAY).toISOString().slice(0,10);P.streak={day:d,n:P.streak.day===y?P.streak.n+1:1}}
+  LS.set('ita.progress',P);renderStat();
+  clearTimeout(pushT);pushT=setTimeout(push,1500);
+}
+async function push(){
+  if(!sb)return;
+  try{const r=await sb.rpc('upsert_items',{p_board:KEY,p_items:[{id:'progress',type:'ita',p:P}]});if(r.error)throw r.error;setDot('ok')}
+  catch(e){console.error(e);setDot('err')}
+}
+window.addEventListener('pagehide',()=>{if(pushT){clearTimeout(pushT);push()}});
+$('#syncBtn').onclick=()=>{
+  $('#syncSheet').hidden=false;
+  $('#syncText').textContent=sb?'Откройте эту ссылку на телефоне или другом компьютере. Там подтянется тот же прогресс, и дальше он будет общим. Ссылку никому не отправляйте: по ней можно менять ваш прогресс.':'База не подключена, поэтому прогресс хранится только в этом браузере.';
+  const u=$('#syncUrl');u.value=location.href.split('#')[0]+'#sync-'+KEY;u.select();
+};
+$('#syncClose').onclick=()=>$('#syncSheet').hidden=true;
+$('#syncSheet').onclick=e=>{if(e.target.id==='syncSheet')e.currentTarget.hidden=true};
+$('#syncCopy').onclick=async()=>{try{await navigator.clipboard.writeText($('#syncUrl').value);toast('Ссылка скопирована');$('#syncSheet').hidden=true}catch(e){$('#syncUrl').select()}};
+
+/* ============ helpers ============ */
+const lvl=()=>LEVELS.find(l=>l.id===P.level)||LEVELS[0];
+LEVELS.forEach(l=>l.topics.forEach(t=>t.ex.forEach((x,i)=>{const e=ITA.expl&&ITA.expl[t.id]&&ITA.expl[t.id][i];if(e)x[3]=e})));
+const THEMES=ITA.themes||[];
+const deckOfLevel=l=>({id:'L:'+l.id,name:'Слова уровня '+l.id,words:l.words,prefix:l.id});
+const deckOfTheme=t=>({id:'T:'+t.id,name:'Тема: '+t.t,words:t.words,prefix:'T:'+t.id});
+function curDeck(){const d=P.deck||'';if(d.startsWith('T:')){const t=THEMES.find(x=>'T:'+x.id===d);if(t)return deckOfTheme(t)}return deckOfLevel(lvl())}
+const wordsOf=d=>d.words.trim().split('\n').map(s=>{const [it,ru]=s.split('|');return {it:it.trim(),ru:(ru||'').trim(),key:d.prefix+'|'+it.trim()}});
+const INTERVALS=[0,1,3,7,14,30,60,120];
+function deckStats(l){
+  const ws=wordsOf(l),now=Date.now();let due=0,fresh=0,learned=0;
+  for(const w of ws){const c=P.cards[w.key];if(!c)fresh++;else{if(c.d<=now)due++;if(c.b>=4)learned++}}
+  return {ws,due,fresh,learned};
+}
+function norm(s){return String(s).toLowerCase().replace(/[’`´]/g,"'").replace(/[.,!?;:«»"()]/g,' ').replace(/\s+/g,' ').trim()}
+const plain=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'');
+function check(input,answer){
+  const alts=String(answer).split('/').map(norm),v=norm(input);
+  if(!v)return null;
+  if(alts.includes(v))return 'ok';
+  if(alts.map(plain).includes(plain(v)))return 'accent';
+  return 'bad';
+}
+let voice=null;
+function pickVoice(){if(!('speechSynthesis' in window))return;const vs=speechSynthesis.getVoices();voice=vs.find(v=>/^it(-|_|$)/i.test(v.lang))||null}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function say(text){
+  if(!('speechSynthesis' in window))return toast('Озвучка в этом браузере недоступна');
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text.replace(/\(.*?\)/g,''));u.lang='it-IT';if(voice)u.voice=voice;u.rate=.92;speechSynthesis.speak(u);
+}
+const sayBtn=t=>'speechSynthesis' in window?`<button class="icon say" type="button" data-say="${esc(t)}" aria-label="Произнести">🔊</button>`:'';
+document.addEventListener('click',e=>{const b=e.target.closest('[data-say]');if(b){e.stopPropagation();say(b.dataset.say)}},true);
+
+/* ============ chrome ============ */
+let tab=LS.get('ita.tab','gram'),route={v:'list'};
+function renderStat(){
+  const st=deckStats(curDeck());
+  const doneTopics=Object.keys(P.topics).length;
+  const streak=P.streak&&P.streak.day&&(P.streak.day===today()||P.streak.day===new Date(Date.now()-DAY).toISOString().slice(0,10))?P.streak.n:0;
+  $('#stat').innerHTML=`<span>🔥 <b>${streak}</b> ${plural(streak,'день','дня','дней')} подряд</span><span>Тем пройдено: <b>${doneTopics}</b></span><span>Повторить: <b>${st.due}</b></span>`;
+}
+function renderLevels(){
+  $('#levels').innerHTML=LEVELS.map(l=>`<button class="lv" data-l="${l.id}" aria-pressed="${l.id===P.level}">${l.id}<small>${esc(l.name)}</small></button>`).join('');
+}
+$('#levels').onclick=e=>{const b=e.target.closest('[data-l]');if(!b)return;P.level=b.dataset.l;if(!String(P.deck||'').startsWith('T:'))P.deck='L:'+P.level;LS.set('ita.progress',P);route={v:'list'};render()};
+document.querySelector('.tabs').onclick=e=>{const b=e.target.closest('[data-tab]');if(!b)return;tab=b.dataset.tab;LS.set('ita.tab',tab);route={v:'list'};render()};
+function render(){
+  renderStat();renderLevels();
+  document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.tab===tab));
+  const v=$('#view');
+  if(tab==='gram')route.v==='topic'?renderTopic(v):renderTopics(v);
+  else if(tab==='rules')renderRules(v);
+  else if(tab==='themes')route.v==='theme'?renderTheme(v):renderThemes(v);
+  else if(tab==='cards')route.v==='session'?renderSession(v):route.v==='words'?renderWords(v):renderDeck(v);
+  else renderTrain(v);
+}
+
+/* ============ grammar ============ */
+function renderTopics(v){
+  const l=lvl();
+  v.innerHTML=`<div class="list">${l.topics.map((t,i)=>{const r=P.topics[t.id];const cls=!r?'':r.best===r.total?'done':'part';
+    return `<button class="topic" data-t="${t.id}"><span class="num">${i+1}</span><span class="tt">${esc(t.t)}</span><span class="badge ${cls}">${r?r.best+' из '+r.total:t.ex.length+' '+plural(t.ex.length,'задание','задания','заданий')}</span></button>`}).join('')}</div>`;
+  v.querySelector('.list').onclick=e=>{const b=e.target.closest('[data-t]');if(!b)return;route={v:'topic',id:b.dataset.t};render();scrollTo(0,0)};
+}
+function exHTML(x,i){
+  const [q,,opts]=x;
+  const qh=esc(q).replace(/___/g,'<span class="blank"></span>');
+  const ans=opts?`<div class="ans">${opts.map(o=>`<button class="opt" type="button" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div>`
+    :`<form class="ans"><input autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Ответ"><button class="btn ghost">Проверить</button></form>`;
+  return `<div class="ex" data-i="${i}"><div class="q">${qh}</div>${ans}<div class="fb" hidden></div></div>`;
+}
+function feedback(card,x,res,given){
+  const [,a,,expl]=x,fb=card.querySelector('.fb'),first=String(a).split('/')[0];
+  card.classList.add(res==='bad'?'bad':'ok');card.dataset.done=res;
+  let t;
+  if(res==='bad')t=`Вы ответили: <b>${esc(given||'')}</b>. Правильно: <b>${esc(first)}</b>.`;
+  else if(res==='accent')t=`Почти верно, проверьте ударение: правильно <b>${esc(first)}</b>.`;
+  else t='Верно!';
+  if(expl)t+=(res==='bad'?'<br>Почему: ':' ')+esc(expl);
+  fb.innerHTML=t;fb.hidden=false;
+  card.querySelectorAll('input,button').forEach(el=>el.disabled=true);
+}
+function wireExercises(root,list,onDone){
+  root.querySelectorAll('.ex').forEach(card=>{
+    const x=list[+card.dataset.i];
+    const f=card.querySelector('form');
+    if(f)f.onsubmit=e=>{e.preventDefault();const inp=f.querySelector('input');const r=check(inp.value,x[1]);if(!r){inp.focus();return}feedback(card,x,r,inp.value.trim());onDone()};
+    card.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
+      const r=check(b.dataset.o,x[1]);
+      card.querySelectorAll('.opt').forEach(o=>{if(check(o.dataset.o,x[1])==='ok')o.classList.add('right')});
+      if(r!=='ok')b.classList.add('wrong');
+      feedback(card,x,r==='ok'?'ok':'bad',b.dataset.o);onDone();
+    });
+  });
+}
+function renderTopic(v){
+  let l=lvl(),t=l.topics.find(x=>x.id===route.id);
+  if(!t){const L=LEVELS.find(L=>L.topics.some(x=>x.id===route.id));if(L){P.level=L.id;l=L;t=L.topics.find(x=>x.id===route.id)}}
+  if(!t){route={v:'list'};return render()}
+  const idx=l.topics.indexOf(t),next=l.topics[idx+1];
+  const body=t.b.replace(/<table>/g,'<div class="tablewrap"><table>').replace(/<\/table>/g,'</table></div>');
+  v.innerHTML=`<div class="wrap" style="gap:14px">
+    <button class="back" id="back">← ${esc(l.id)}: все темы</button>
+    <h2>${esc(t.t)}</h2>
+    <div class="rule">${body}</div>
+    <h3>Упражнения</h3>
+    <div class="exs">${t.ex.map(exHTML).join('')}</div>
+    <div class="score" id="score" hidden></div></div>`;
+  $('#back').onclick=()=>{route={v:'list'};render()};
+  const exs=v.querySelector('.exs');
+  wireExercises(exs,t.ex,()=>{
+    const cards=[...exs.querySelectorAll('.ex')],done=cards.filter(c=>c.dataset.done);
+    if(done.length<cards.length)return;
+    const good=done.filter(c=>c.dataset.done!=='bad').length,prev=P.topics[t.id];
+    P.topics[t.id]={best:Math.max(good,prev?prev.best:0),total:cards.length,at:Date.now()};save();
+    const s=$('#score');s.hidden=false;
+    s.innerHTML=`<strong>${good} / ${cards.length}</strong><span>${good===cards.length?'Отлично, тема усвоена!':good>=cards.length*.7?'Хорошо. Ошибки стоит пройти ещё раз.':'Перечитайте правило и попробуйте снова.'}</span>
+      <button class="btn ghost" id="again">Заново</button>${next?`<button class="btn" id="next">Дальше: ${esc(next.t)}</button>`:''}`;
+    $('#again').onclick=()=>{render();scrollTo(0,0)};
+    if(next)$('#next').onclick=()=>{route={v:'topic',id:next.id};render();scrollTo(0,0)};
+  });
+}
+
+/* ============ cards ============ */
+let session=null;
+function renderDeck(v){
+  const d=curDeck(),st=deckStats(d),newToday=Math.min(10,st.fresh),total=st.due+newToday;
+  const opts=[deckOfLevel(lvl()),...THEMES.map(deckOfTheme)].map(x=>`<option value="${x.id}" ${x.id===d.id?'selected':''}>${esc(x.name)}</option>`).join('');
+  v.innerHTML=`<div class="wrap" style="gap:14px"><div class="deck">
+    <label class="row" style="gap:8px"><span style="color:var(--muted);font-size:14px">Колода:</span><select class="decksel" id="deckSel">${opts}</select></label>
+    <div class="nums"><div><b>${st.due}</b><span>повторить</span></div><div><b>${st.fresh}</b><span>новых</span></div><div><b>${st.learned}</b><span>выучено из ${st.ws.length}</span></div></div>
+    <div class="progressbar"><i style="width:${Math.round(st.learned/st.ws.length*100)}%"></i></div>
+    <div class="row"><span style="color:var(--muted);font-size:14px">Показывать сначала:</span>
+      <span class="seg"><button data-dir="it" aria-pressed="${P.dir!=='ru'}">итальянский</button><button data-dir="ru" aria-pressed="${P.dir==='ru'}">русский</button></span></div>
+    <div class="row"><button class="btn" id="start" ${total?'':'disabled'}>${total?`Начать: ${total} ${plural(total,'карточка','карточки','карточек')}`:'На сегодня всё повторено'}</button><button class="btn ghost" id="all">Все слова колоды</button></div>
+  </div>
+  <p style="color:var(--muted);font-size:14px;margin:0">Слово, которое вы помните, вернётся через 1, 3, 7, 14 дней и дальше. Забытое вернётся сегодня же. За раз добавляется до 10 новых слов.</p></div>`;
+  $('#deckSel').onchange=e=>{P.deck=e.target.value;LS.set('ita.progress',P);render()};
+  v.querySelector('.seg').onclick=e=>{const b=e.target.closest('[data-dir]');if(!b)return;P.dir=b.dataset.dir;LS.set('ita.progress',P);render()};
+  $('#all').onclick=()=>{route={v:'words'};render()};
+  $('#start').onclick=()=>{
+    const now=Date.now(),due=st.ws.filter(w=>P.cards[w.key]&&P.cards[w.key].d<=now),fresh=st.ws.filter(w=>!P.cards[w.key]).slice(0,10);
+    const q=[...due.sort(()=>Math.random()-.5),...fresh];
+    session={q,done:0,total:q.length,flipped:false};route={v:'session'};render();
+  };
+}
+function renderSession(v){
+  if(!session||!session.q.length){
+    const n=session?session.total:0;session=null;
+    v.innerHTML=`<div class="score"><strong>✓</strong><span>Готово! ${n?`Пройдено ${n} ${plural(n,'карточка','карточки','карточек')}.`:''} Возвращайтесь завтра, чтобы повторить вовремя.</span><button class="btn" id="fin">К колоде</button></div>`;
+    $('#fin').onclick=()=>{route={v:'list'};render()};return;
+  }
+  const w=session.q[0],c=P.cards[w.key],box=c?c.b:0,ruFirst=P.dir==='ru';
+  const front=ruFirst?w.ru:w.it,back=ruFirst?w.it:w.ru;
+  v.innerHTML=`<div class="wrap" style="gap:12px">
+    <button class="back" id="stop">← Закончить</button>
+    <div class="progressbar"><i style="width:${Math.round(session.done/(session.done+session.q.length)*100)}%"></i></div>
+    <div class="card" id="card" tabindex="0" role="button" aria-label="Перевернуть карточку">
+      <div class="boxes" aria-hidden="true">${[1,2,3,4,5].map(i=>`<i class="${box>=i?'on':''}"></i>`).join('')}</div>
+      ${sayBtn(w.it)}
+      <div class="front">${esc(front)}</div>
+      ${session.flipped?`<div class="tr">${esc(back)}</div>`:'<div class="hint">Нажмите, чтобы увидеть перевод</div>'}
+    </div>
+    ${session.flipped?`<div class="grade"><button class="btn no" id="no">Не помню</button><button class="btn" id="yes">Помню</button></div>`:''}
+  </div>`;
+  $('#stop').onclick=()=>{session=null;route={v:'list'};render()};
+  const flip=()=>{if(!session.flipped){session.flipped=true;render();if(!ruFirst)say(w.it)}};
+  $('#card').onclick=flip;$('#card').onkeydown=e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();flip()}};
+  if(session.flipped){
+    $('#no').onclick=()=>grade(false);$('#yes').onclick=()=>grade(true);
+  }
+}
+function grade(ok){
+  const w=session.q.shift(),c=P.cards[w.key]||{b:0,d:0};
+  if(ok){c.b=Math.min(INTERVALS.length-1,c.b+1);c.d=Date.now()+INTERVALS[c.b]*DAY-36e5;session.done++}
+  else{c.b=0;c.d=Date.now();session.q.splice(Math.min(3,session.q.length),0,w)}
+  P.cards[w.key]=c;save();session.flipped=false;render();
+}
+document.addEventListener('keydown',e=>{
+  if(tab!=='cards'||route.v!=='session'||!session||!session.flipped||e.target.closest('input'))return;
+  if(e.key==='1'||e.key==='ArrowLeft')grade(false);else if(e.key==='2'||e.key==='ArrowRight')grade(true);
+});
+function renderWords(v){
+  const d=curDeck(),ws=wordsOf(d);
+  v.innerHTML=`<div class="wrap" style="gap:12px"><button class="back" id="back">← К колоде</button><h2>${esc(d.name)}</h2>
+    <div class="words">${ws.map(w=>`<div class="w${P.cards[w.key]&&P.cards[w.key].b>=4?' learned':''}"><b>${esc(w.it)}</b><span>${esc(w.ru)}</span></div>`).join('')}</div></div>`;
+  $('#back').onclick=()=>{route={v:'list'};render()};
+}
+
+/* ============ rules ============ */
+function tableWrap(h){return h.replace(/<table>/g,'<div class="tablewrap"><table>').replace(/<\/table>/g,'</table></div>')}
+function renderRules(v){
+  const l=lvl();
+  v.innerHTML=`<div class="wrap" style="gap:18px">
+    <p style="margin:0;color:var(--muted)">Все правила уровня ${esc(l.id)} на одной странице. Нажмите на тему, чтобы перейти к ней, или откройте упражнения под правилом.</p>
+    <nav class="toc">${l.topics.map(t=>`<a href="#r-${t.id}" data-jump="${t.id}">${esc(t.t)}</a>`).join('')}</nav>
+    ${l.topics.map(t=>`<section class="rsec" id="r-${t.id}"><h2>${esc(t.t)}</h2><div class="rule">${tableWrap(t.b)}</div>
+      <button class="btn ghost" style="align-self:flex-start" data-go="${t.id}">Упражнения по теме (${t.ex.length})</button></section>`).join('')}
+  </div>`;
+  v.querySelectorAll('[data-jump]').forEach(a=>a.onclick=e=>{e.preventDefault();document.getElementById('r-'+a.dataset.jump).scrollIntoView({behavior:'smooth'})});
+  v.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{tab='gram';LS.set('ita.tab',tab);route={v:'topic',id:b.dataset.go};render();scrollTo(0,0)});
+}
+
+/* ============ themes ============ */
+function renderThemes(v){
+  v.innerHTML=`<div class="wrap" style="gap:12px"><p style="margin:0;color:var(--muted)">Уроки по темам: текст с переводом, полезные фразы, слова для карточек и задания. Уровень указан для ориентира, уроки открыты все.</p>
+    <div class="tgrid">${THEMES.map(t=>{const r=P.topics['T:'+t.id];const cls=!r?'':r.best===r.total?'done':'part';
+      return `<button class="tcard" data-th="${t.id}"><span class="lvtag">${esc(t.lvl)}</span><b>${esc(t.t)}</b><i lang="it">${esc(t.it)}</i><span class="badge ${cls}">${r?'задания: '+r.best+' из '+r.total:'не начат'}</span></button>`}).join('')}</div></div>`;
+  v.querySelector('.tgrid').onclick=e=>{const b=e.target.closest('[data-th]');if(!b)return;route={v:'theme',id:b.dataset.th};render();scrollTo(0,0)};
+}
+function renderTheme(v){
+  const t=THEMES.find(x=>x.id===route.id);if(!t){route={v:'list'};return render()}
+  const words=wordsOf(deckOfTheme(t)),idx=THEMES.indexOf(t),next=THEMES[idx+1];
+  v.innerHTML=`<div class="wrap" style="gap:14px">
+    <button class="back" id="back">← Все темы</button>
+    <div><span class="lvtag">${esc(t.lvl)}</span><h2>${esc(t.t)}</h2><i lang="it" class="it" style="background:none;padding:0;color:var(--muted)">${esc(t.it)}</i></div>
+    <h3>Текст</h3>
+    <div class="reading"><div class="it-text" lang="it">${esc(t.text)}</div>
+      <div class="ru-text" id="ru" hidden>${esc(t.tr)}</div>
+      <div class="row">${'speechSynthesis' in window?`<button class="btn ghost" id="read">🔊 Прослушать</button>`:''}<button class="btn ghost" id="tr">Показать перевод</button></div></div>
+    <h3>Полезные фразы</h3>
+    <div class="phr">${t.phrases.map(([a,b])=>`<div>${sayBtn(a)}<b lang="it">${esc(a)}</b><span>${esc(b)}</span></div>`).join('')}</div>
+    <h3>Слова (${words.length})</h3>
+    <div class="words">${words.map(w=>`<div class="w${P.cards[w.key]&&P.cards[w.key].b>=4?' learned':''}"><b>${esc(w.it)}</b><span>${esc(w.ru)}</span></div>`).join('')}</div>
+    <button class="btn" id="learn" style="align-self:flex-start">Учить эти слова в карточках</button>
+    <h3>Задания</h3>
+    <div class="exs">${t.ex.map(exHTML).join('')}</div>
+    <div class="score" id="score" hidden></div></div>`;
+  $('#back').onclick=()=>{route={v:'list'};render()};
+  $('#tr').onclick=()=>{const r=$('#ru');r.hidden=!r.hidden;$('#tr').textContent=r.hidden?'Показать перевод':'Скрыть перевод'};
+  if($('#read'))$('#read').onclick=()=>say(t.text);
+  $('#learn').onclick=()=>{P.deck='T:'+t.id;LS.set('ita.progress',P);tab='cards';LS.set('ita.tab',tab);route={v:'list'};render();scrollTo(0,0)};
+  const exs=v.querySelector('.exs');
+  wireExercises(exs,t.ex,()=>{
+    const cards=[...exs.querySelectorAll('.ex')],done=cards.filter(c=>c.dataset.done);
+    if(done.length<cards.length)return;
+    const good=done.filter(c=>c.dataset.done!=='bad').length,key='T:'+t.id,prev=P.topics[key];
+    P.topics[key]={best:Math.max(good,prev?prev.best:0),total:cards.length,at:Date.now()};save();
+    const s=$('#score');s.hidden=false;
+    s.innerHTML=`<strong>${good} / ${cards.length}</strong><span>${good===cards.length?'Отлично!':'Ошибки можно разобрать выше.'}</span><button class="btn ghost" id="again">Заново</button>${next?`<button class="btn" id="next">Дальше: ${esc(next.t)}</button>`:''}`;
+    $('#again').onclick=()=>{render();scrollTo(0,0)};
+    if(next)$('#next').onclick=()=>{route={v:'theme',id:next.id};render();scrollTo(0,0)};
+  });
+}
+
+/* ============ training ============ */
+function renderTrain(v){
+  const l=lvl();
+  const pool=[];l.topics.forEach(t=>t.ex.forEach(x=>pool.push({x,t:t.t})));
+  const pick=pool.sort(()=>Math.random()-.5).slice(0,10);
+  v.innerHTML=`<div class="wrap" style="gap:12px"><p style="margin:0;color:var(--muted)">10 случайных заданий из всех тем уровня ${esc(l.id)}. Над каждым написано, к какой теме оно относится.</p>
+    <div class="exs">${pick.map((p,i)=>exHTML(p.x,i).replace('<div class="q">',`<div style="font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">${esc(p.t)}</div><div class="q">`)).join('')}</div>
+    <div class="score" id="score" hidden></div></div>`;
+  const exs=v.querySelector('.exs');
+  wireExercises(exs,pick.map(p=>p.x),()=>{
+    const cards=[...exs.querySelectorAll('.ex')],done=cards.filter(c=>c.dataset.done);
+    if(done.length<cards.length)return;
+    const good=done.filter(c=>c.dataset.done!=='bad').length;save();
+    const s=$('#score');s.hidden=false;
+    s.innerHTML=`<strong>${good} / ${cards.length}</strong><span>${good===cards.length?'Без единой ошибки!':'Темы с ошибками можно открыть во вкладке «Грамматика».'}</span><button class="btn" id="more">Ещё 10 заданий</button>`;
+    $('#more').onclick=()=>{render();scrollTo(0,0)};
+  });
+}
+
+render();
+pull();
+})();
+</script>
+</body>
+</html>
