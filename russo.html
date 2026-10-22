@@ -36,6 +36,20 @@ button,input{font:inherit;color:inherit}
 .wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
 .top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .brand{display:flex;align-items:baseline;gap:10px;margin-right:auto;text-decoration:none;color:var(--fg)}
+.mascot{display:inline-block;width:54px;height:43px;flex:none;align-self:center}
+.mascot svg{width:100%;height:100%;display:block}
+.mwrap{position:relative;display:inline-flex;align-self:center}
+.bubble{position:absolute;left:40px;top:-14px;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:12px 12px 12px 3px;padding:3px 9px;font:800 12px/1.3 var(--ui);white-space:nowrap;box-shadow:var(--shadow);opacity:0;transform:translateY(4px);transition:.3s;pointer-events:none;z-index:2}
+.bubble.show{opacity:1;transform:none}
+#pet{position:fixed;right:max(14px,env(safe-area-inset-right,0px));bottom:calc(70px + env(safe-area-inset-bottom,0px));display:flex;align-items:flex-start;gap:0;z-index:25;pointer-events:none;opacity:0;transform:translateY(30px) scale(.8);transition:.35s cubic-bezier(.3,1.5,.6,1)}
+#pet.show{opacity:1;transform:none}
+#pet .mascot{width:110px;height:88px}
+#pet .bubble{position:static;opacity:1;transform:none;font-size:15px;margin-top:4px}
+@media (prefers-reduced-motion:reduce){#pet{transition:opacity .2s;transform:none}}
+.win{display:flex;align-items:flex-start;gap:4px}
+.win .bubble{position:static;opacity:1;transform:none;margin-top:4px;font-size:14px}
+.mascot.big{width:96px;height:77px}
+@media (prefers-reduced-motion:no-preference){.mascot.big{animation:hop .6s ease-out 2}@keyframes hop{50%{transform:translateY(-10px)}}}
 .brand b{font:800 26px/1 var(--ui);letter-spacing:-.03em}
 .brand i{font:italic 500 17px/1 var(--it);color:var(--muted)}
 .stat{font-size:13px;color:var(--muted);display:flex;gap:12px;align-items:center;font-variant-numeric:tabular-nums}
@@ -137,6 +151,35 @@ h3{margin:8px 0 0;font:800 13px/1 var(--ui);text-transform:uppercase;letter-spac
 .toc a{font-size:13px;font-weight:700;color:var(--accent);background:var(--accent-soft);padding:5px 10px;border-radius:99px;text-decoration:none}
 .rsec{display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px}
 .rsec h2{font-size:22px}
+.build{display:flex;flex-direction:column;gap:10px}
+.build .line{min-height:48px;border:2px dashed var(--line);border-radius:12px;padding:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.build .line:empty::before{content:attr(data-ph);color:var(--muted);font-size:14px;padding:4px 6px}
+.build .chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:7px 12px;cursor:pointer;font:500 17px/1.2 var(--it)}
+.line .chip{background:var(--accent-soft);border-color:var(--accent)}
+.chip:disabled{cursor:default}
+.topic.locked{opacity:.55}
+.topic.locked .num{background:var(--line);color:var(--muted)}
+.badge.pass{background:var(--ok);color:#fff}
+.tracker{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:8px 14px;margin-bottom:14px;flex-wrap:wrap}
+.tracker .progressbar{flex:1 1 120px;min-width:100px}
+.tlv{font-size:14px}
+.tpc{font-size:14px;font-variant-numeric:tabular-nums}
+.tmsg{font-size:13px;color:var(--muted);font-weight:700}
+.rlang{align-self:flex-start}
+.testbox{background:var(--panel);border:2px solid var(--accent);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.testbox p{margin:0}
+.tcat{margin:10px 0 0;font-size:20px}
+.more{border:1px solid var(--line);border-radius:16px;background:var(--panel);overflow:hidden}
+.more>summary{cursor:pointer;list-style:none;padding:12px 18px;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:8px}
+.more>summary::-webkit-details-marker{display:none}
+.more>summary::before{content:"▸";transition:transform .2s}
+.more[open]>summary::before{transform:rotate(90deg)}
+.more>summary small{font-weight:600;color:var(--muted)}
+.more .rule{border:0;border-top:1px solid var(--line);border-radius:0}
+.rule h4{margin:16px 0 4px;font-size:15px}
+.rule .warn{background:var(--bad-soft);border-radius:10px;padding:8px 12px}
+.rule .tip{background:var(--ok-soft);border-radius:10px;padding:8px 12px}
 .tbl{padding:4px 0 2px}
 .tbl .tablewrap{margin:0}
 .tbl table{font-size:15px}
@@ -144,6 +187,19 @@ h3{margin:8px 0 0;font:800 13px/1 var(--ui);text-transform:uppercase;letter-spac
 .tbl tr:nth-child(even) td,.tbl tr:nth-child(even) th[scope="row"]{background:var(--bg)}
 .tbl td b{color:var(--accent);font-weight:700}
 .tbl th,.tbl td{padding:8px 12px;vertical-align:middle}
+.dtools{display:flex;gap:8px;flex-wrap:wrap}
+.dtools input{flex:1 1 220px;min-width:0;font-size:16px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel)}
+.dtools input:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.dgroup{display:flex;flex-direction:column;gap:6px}
+.dlist{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.dw{display:grid;grid-template-columns:36px minmax(0,1fr) minmax(0,1fr);gap:10px;align-items:center;padding:7px 12px;border-bottom:1px solid var(--line)}
+.dw:last-child{border-bottom:0}
+.dw:nth-child(even){background:var(--bg)}
+.dw b{font:500 17px/1.3 var(--it);overflow-wrap:anywhere}
+.dw span{color:var(--muted);font-size:15px;overflow-wrap:anywhere}
+.dw .say{position:static;height:30px;padding:0 6px}
+.dcount{font-size:13px;color:var(--muted)}
+@media (max-width:520px){.dw{grid-template-columns:32px 1fr}.dw span{grid-column:2}}
 .tnote{margin:10px 16px 12px;font-size:14px;color:var(--muted)}
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
 .tcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-width:0}
@@ -190,7 +246,7 @@ body:has(#nl-badge-frame){padding-bottom:calc(90px + env(safe-area-inset-bottom,
 <div class="wrap">
   <header class="top">
     <a class="home" href="index.html" title="Torna a Vatman">← Vatman</a>
-    <a class="brand" href="russo.html"><b>Русский</b><i>il russo passo dopo passo</i></a>
+    <a class="brand" href="russo.html"><span class="mwrap"><span class="mascot" id="mascot"></span><span class="bubble" id="mbub"></span></span><b>Русский</b><i>il russo passo dopo passo</i></a>
     <div class="stat" id="stat"></div>
     <button class="icon" id="syncBtn" type="button" title="I progressi su un altro dispositivo"><span class="dot" id="syncDot"></span>Sincronizza</button>
   </header>
@@ -200,6 +256,8 @@ body:has(#nl-badge-frame){padding-bottom:calc(90px + env(safe-area-inset-bottom,
     <button class="tab" role="tab" data-tab="rules" aria-selected="false">Regole</button>
     <button class="tab" role="tab" data-tab="tables" aria-selected="false">Tabelle</button>
     <button class="tab" role="tab" data-tab="themes" aria-selected="false">Lezioni a tema</button>
+    <button class="tab" role="tab" data-tab="speak" aria-selected="false" hidden>Parlare</button>
+    <button class="tab" role="tab" data-tab="dict" aria-selected="false">Dizionario</button>
     <button class="tab" role="tab" data-tab="cards" aria-selected="false">Flashcard</button>
     <button class="tab" role="tab" data-tab="train" aria-selected="false">Allenamento</button>
   </div>
@@ -218,23 +276,38 @@ body:has(#nl-badge-frame){padding-bottom:calc(90px + env(safe-area-inset-bottom,
   <div class="rulebox" role="dialog" aria-modal="true" aria-labelledby="ruleTitle">
     <h4 id="ruleTitle"></h4>
     <div class="rule" id="ruleBody"></div>
-    <div class="row"><button class="btn ghost" id="ruleGo" type="button">Apri l'argomento</button><button class="btn" id="ruleClose" type="button">Ho capito</button></div>
+    <div class="row"><button class="btn ghost" id="ruleGo" type="button">Apri l’argomento</button><button class="btn" id="ruleClose" type="button">Ho capito</button></div>
   </div>
 </div>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script src="config.js"></script>
 <script src="supabase.js"></script>
-<script>window.ITA={levels:[]};</script>
+<script>window.ITA={levels:[],gate:true,target:{level:'A1',date:'2026-12-31',label:'entro Capodanno'},name:'Джованни'};</script>
 <script src="rus-a1.js"></script>
+<script src="rus-a1b.js"></script>
 <script src="rus-a2.js"></script>
+<script src="rus-a2b.js"></script>
 <script src="rus-b1.js"></script>
 <script src="rus-b2.js"></script>
 <script src="rus-c1.js"></script>
+<script src="rus-themes0.js"></script>
 <script src="rus-themes1.js"></script>
 <script src="rus-themes2.js"></script>
+<script src="rus-themes3.js"></script>
+<script src="rus-themes4.js"></script>
 <script src="rus-art.js"></script>
+<script src="rus-art2.js"></script>
 <script src="rus-tables.js"></script>
+<script src="rus-extra.js"></script>
+<script src="rus-wordsb.js"></script>
+<script src="rus-more1.js"></script>
+<script src="rus-more2.js"></script>
+<script src="rus-bru1.js"></script>
+<script src="rus-bru2.js"></script>
+<script src="rus-speak.js"></script>
+<script src="rus-vocab.js"></script>
+
 
 <script>
 (()=>{
@@ -243,6 +316,19 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const uid=()=>Math.random().toString(36).slice(2,10);
 const LS={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 let toastT;function toast(m,ms=2400){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('show'),ms)}
+const DOG=`<svg aria-hidden="true" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="90" rx="44" ry="4" fill="#000" opacity=".12"/><path d="M92 44 q12 -14 8 -26" stroke="#F4F1EA" stroke-width="7" stroke-linecap="round" fill="none"/><path d="M92 44 q12 -14 8 -26" stroke="#2A2422" stroke-width="1.5" stroke-linecap="round" fill="none" opacity=".25"/><rect x="34" y="38" width="62" height="32" rx="16" fill="#F4F1EA" stroke="#D9D2C5"/><ellipse cx="78" cy="48" rx="13" ry="9" fill="#B9773E"/><rect x="40" y="62" width="9" height="24" rx="4.5" fill="#F4F1EA" stroke="#D9D2C5"/><rect x="52" y="62" width="9" height="24" rx="4.5" fill="#EDE8DE" stroke="#D9D2C5"/><rect x="78" y="62" width="9" height="24" rx="4.5" fill="#F4F1EA" stroke="#D9D2C5"/><rect x="89" y="62" width="9" height="24" rx="4.5" fill="#EDE8DE" stroke="#D9D2C5"/><path d="M22 30 q-2 -18 18 -20 q20 0 20 18 q0 18 -18 20 q-12 0 -20 -6Z" fill="#F4F1EA" stroke="#D9D2C5"/><path d="M30 14 q8 -8 22 -2 q8 6 8 16 q-12 -4 -16 4 q-6 -4 -14 -18Z" fill="#B9773E"/><path d="M44 10 l14 -6 l2 14 q-8 2 -16 -8Z" fill="#8A5428"/><path d="M28 13 l-10 -5 l2 13 q6 0 8 -8Z" fill="#8A5428"/><ellipse cx="14" cy="34" rx="12" ry="8" fill="#F4F1EA" stroke="#D9D2C5"/><circle cx="5" cy="31" r="3.6" fill="#2A2422"/><circle cx="36" cy="24" r="3" fill="#2A2422"/><circle cx="37" cy="23" r="1" fill="#fff"/><path d="M8 39 q6 5 12 1" stroke="#2A2422" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M12 41 q1 7 5 6 q3 -1 2 -6" fill="#E57373"/><path d="M30 46 h16" stroke="#C23B32" stroke-width="4" stroke-linecap="round"/><circle cx="40" cy="51" r="3" fill="#E2B33C"/></svg>`;
+const CAT_BLACK=`<svg aria-hidden="true" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="91" rx="34" ry="4" fill="#000" opacity=".12"/><path d="M82 84 q26 -2 22 -26 q-2 -10 -8 -8" stroke="#2B2A33" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M38 88 q-6 -34 22 -40 q28 6 22 40Z" fill="#2B2A33" stroke="#15141A"/><path d="M30 22 l4 -20 l16 14Z" fill="#2B2A33" stroke="#15141A"/><path d="M34 8 l2 -2 l9 9Z" fill="#E9A6A6"/><path d="M90 22 l-4 -20 l-16 14Z" fill="#2B2A33" stroke="#15141A"/><path d="M86 8 l-2 -2 l-9 9Z" fill="#E9A6A6"/><ellipse cx="60" cy="32" rx="30" ry="24" fill="#2B2A33" stroke="#15141A"/><ellipse cx="48" cy="30" rx="6" ry="7" fill="#F2C94C"/><ellipse cx="72" cy="30" rx="6" ry="7" fill="#F2C94C"/><ellipse cx="48" cy="31" rx="2" ry="5" fill="#15141A"/><ellipse cx="72" cy="31" rx="2" ry="5" fill="#15141A"/><circle cx="50" cy="28" r="1.4" fill="#fff"/><circle cx="74" cy="28" r="1.4" fill="#fff"/><path d="M57 40 h6 l-3 3Z" fill="#E9A6A6"/><path d="M60 43 q-3 4 -7 2 M60 43 q3 4 7 2" stroke="#15141A" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M40 40 h-16 M40 44 l-15 4 M80 40 h16 M80 44 l15 4" stroke="#15141A" stroke-width="1" opacity=".7"/><ellipse cx="50" cy="86" rx="7" ry="4" fill="#2B2A33" stroke="#15141A"/><ellipse cx="70" cy="86" rx="7" ry="4" fill="#2B2A33" stroke="#15141A"/><path d="M44 54 q16 8 32 0" stroke="#C23B32" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="60" cy="60" r="3" fill="#E2B33C"/></svg>`;
+const CAT_WHITE=`<svg aria-hidden="true" viewBox="0 0 120 96" xmlns="http://www.w3.org/2000/svg"><ellipse cx="60" cy="91" rx="34" ry="4" fill="#000" opacity=".12"/><path d="M82 84 q26 -2 22 -26 q-2 -10 -8 -8" stroke="#FBFAF7" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M38 88 q-6 -34 22 -40 q28 6 22 40Z" fill="#FBFAF7" stroke="#D6D0C4"/><path d="M30 22 l4 -20 l16 14Z" fill="#FBFAF7" stroke="#D6D0C4"/><path d="M34 8 l2 -2 l9 9Z" fill="#F3B5B5"/><path d="M90 22 l-4 -20 l-16 14Z" fill="#FBFAF7" stroke="#D6D0C4"/><path d="M86 8 l-2 -2 l-9 9Z" fill="#F3B5B5"/><ellipse cx="60" cy="32" rx="30" ry="24" fill="#FBFAF7" stroke="#D6D0C4"/><ellipse cx="48" cy="30" rx="6" ry="7" fill="#7FB8E6"/><ellipse cx="72" cy="30" rx="6" ry="7" fill="#7FB8E6"/><ellipse cx="48" cy="31" rx="2" ry="5" fill="#24324A"/><ellipse cx="72" cy="31" rx="2" ry="5" fill="#24324A"/><circle cx="50" cy="28" r="1.4" fill="#fff"/><circle cx="74" cy="28" r="1.4" fill="#fff"/><path d="M57 40 h6 l-3 3Z" fill="#E9A6A6"/><path d="M60 43 q-3 4 -7 2 M60 43 q3 4 7 2" stroke="#D6D0C4" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M40 40 h-16 M40 44 l-15 4 M80 40 h16 M80 44 l15 4" stroke="#D6D0C4" stroke-width="1" opacity=".7"/><ellipse cx="50" cy="86" rx="7" ry="4" fill="#FBFAF7" stroke="#D6D0C4"/><ellipse cx="70" cy="86" rx="7" ry="4" fill="#FBFAF7" stroke="#D6D0C4"/><path d="M44 54 q16 8 32 0" stroke="#2F5D8C" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="60" cy="60" r="3" fill="#E2B33C"/></svg>`;
+const SAYS=[['Sei bravo!','Bravo, Giovanni!'],['Bravissimo!','Perfetto!'],['Молодец!','Джованни, отлично!']];
+const PETS=[DOG,CAT_BLACK,CAT_WHITE].map((svg,i)=>({svg,say:SAYS[i]}));
+const PRAISE=PETS[0].say;
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const praise=()=>rnd(PRAISE);
+const winHTML=()=>{const p=rnd(PETS);return `<span class="win"><span class="mascot big">${p.svg}</span><span class="bubble">${rnd(p.say)}</span></span>`};
+const petEl=document.createElement('div');petEl.id='pet';petEl.setAttribute('aria-hidden','true');document.body.appendChild(petEl);
+let petT;function petPop(){const p=rnd(PETS);petEl.innerHTML=`<span class="bubble">${rnd(p.say)}</span><span class="mascot">${p.svg}</span>`;petEl.classList.add('show');clearTimeout(petT);petT=setTimeout(()=>petEl.classList.remove('show'),1700)}
+document.getElementById('mascot').innerHTML=DOG;
+{const bb=document.getElementById('mbub');bb.textContent=PRAISE[0];document.getElementById('mascot').closest('.mwrap').addEventListener('mouseenter',()=>{bb.textContent=praise();bb.classList.add('show');setTimeout(()=>bb.classList.remove('show'),2500)})}
 const DAY=864e5,today=()=>new Date().toISOString().slice(0,10);
 const LEVELS=ITA.levels;
 const plural=(n,a,b)=>n===1?a:b;
@@ -298,16 +384,31 @@ const lvl=()=>LEVELS.find(l=>l.id===P.level)||LEVELS[0];
 LEVELS.forEach(l=>l.topics.forEach(t=>t.ex.forEach((x,i)=>{const e=ITA.expl&&ITA.expl[t.id]&&ITA.expl[t.id][i];if(e)x[3]=e})));
 const THEMES=ITA.themes||[];
 const TOPIC={};LEVELS.forEach(l=>l.topics.forEach(t=>TOPIC[t.id]=t));
+const MORE=ITA.more||{};
+P.passed=P.passed||{};
+const ORDER=[];LEVELS.forEach(l=>l.topics.forEach(t=>ORDER.push(t)));
+const GATE=!!ITA.gate,PASS=0.75;
+function isOpen(id){if(!GATE)return true;const i=ORDER.findIndex(t=>t.id===id);if(i<=0)return true;const L=LEVELS.find(l=>l.topics.some(t=>t.id===id));if(L.topics[0].id===id){const pi=LEVELS.indexOf(L)-1;return pi<0||!!P.exams[LEVELS[pi].id]}return !!P.passed[ORDER[i-1].id]}
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const lockMsg='Prima supera il test della lezione precedente (serve il 75%)';
+P.exams=P.exams||{};P.passedAt=P.passedAt||{};
+const ruleOf=t=>(P.rlang==='ru'&&t.bru)?t.bru:t.b;
+const rlangSeg=t=>t.bru?`<span class="seg rlang" role="group" aria-label="Lingua della spiegazione"><button type="button" data-rl="it" aria-pressed="${P.rlang!=='ru'}">Italiano</button><button type="button" data-rl="ru" aria-pressed="${P.rlang==='ru'}">По-русски</button></span>`:'';
+document.addEventListener('click',e=>{const b=e.target.closest('[data-rl]');if(!b)return;P.rlang=b.dataset.rl;LS.set('rus.progress',P);if(!$('#ruleSheet').hidden&&ruleId){const t=TOPIC[ruleId];$('#ruleBody').innerHTML=rlangSeg(t)+tableWrap(ruleOf(t))+moreHTML(t.id)}else render()});
+const levelDone=L=>L.topics.every(t=>P.passed[t.id]);
+const examItems=L=>{if(ITA.exams&&ITA.exams[L.id])return ITA.exams[L.id];const out=[];L.topics.forEach(t=>shuffle(testOf(t)).slice(0,2).forEach(x=>out.push(x)));return out};
+const moreHTML=id=>MORE[id]?`<details class="more"><summary>Approfondisci <small>esempi, eccezioni, errori tipici</small></summary><div class="rule">${MORE[id].replace(/<table>/g,'<div class="tablewrap"><table>').replace(/<\/table>/g,'</table></div>')}</div></details>`:'';
 let ruleId=null;
-document.addEventListener('click',e=>{const b=e.target.closest('[data-rule-open]');if(!b)return;const t=TOPIC[b.dataset.ruleOpen];if(!t)return;ruleId=t.id;$('#ruleTitle').textContent=t.t;$('#ruleBody').innerHTML=t.b.replace(/<table>/g,'<div class="tablewrap"><table>').replace(/<\/table>/g,'</table></div>');$('#ruleSheet').hidden=false;$('#ruleClose').focus()});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-rule-open]');if(!b)return;const t=TOPIC[b.dataset.ruleOpen];if(!t)return;ruleId=t.id;$('#ruleTitle').textContent=t.t;$('#ruleBody').innerHTML=rlangSeg(t)+tableWrap(ruleOf(t))+moreHTML(t.id);$('#ruleSheet').hidden=false;$('#ruleClose').focus()});
 $('#ruleClose').onclick=()=>$('#ruleSheet').hidden=true;
 $('#ruleSheet').onclick=e=>{if(e.target.id==='ruleSheet')e.currentTarget.hidden=true};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#ruleSheet').hidden)$('#ruleSheet').hidden=true});
 $('#ruleGo').onclick=()=>{$('#ruleSheet').hidden=true;if(!ruleId)return;tab='gram';LS.set('rus.tab',tab);route={v:'topic',id:ruleId};render();scrollTo(0,0)};
-const deckOfLevel=l=>({id:'L:'+l.id,name:'Parole del livello '+l.id,words:l.words,prefix:l.id});
+const deckOfLevel=l=>({id:'L:'+l.id,name:'Parole del livello '+l.id,words:l.words||l.topics.map(t=>t.words||'').join('\n'),prefix:l.id});
 const deckOfTheme=t=>({id:'T:'+t.id,name:'Tema: '+t.t,words:t.words,prefix:'T:'+t.id});
-function curDeck(){const d=P.deck||'';if(d.startsWith('T:')){const t=THEMES.find(x=>'T:'+x.id===d);if(t)return deckOfTheme(t)}return deckOfLevel(lvl())}
-const wordsOf=d=>d.words.trim().split('\n').map(s=>{const [it,ru]=s.split('|');return {it:it.trim(),ru:(ru||'').trim(),key:d.prefix+'|'+it.trim()}});
+const deckOfTopic=t=>({id:'G:'+t.id,name:'Lezione: '+t.t,words:t.words,prefix:'G:'+t.id});
+function curDeck(){const d=P.deck||'';if(d.startsWith('T:')){const t=THEMES.find(x=>'T:'+x.id===d);if(t)return deckOfTheme(t)}if(d.startsWith('V:')){const x=(ITA.vocab||[]).find(v=>'V:'+v.id===d);if(x)return {id:d,name:'Vocabolario: '+x.t,words:x.words,prefix:d}}if(d.startsWith('G:')){let t=null;LEVELS.forEach(l=>l.topics.forEach(x=>{if('G:'+x.id===d)t=x}));if(t&&t.words)return deckOfTopic(t)}return deckOfLevel(lvl())}
+const wordsOf=d=>String(d.words||'').trim().split('\n').filter(x=>x.trim()).map(s=>{const [it,ru]=s.split('|');return {it:it.trim(),ru:(ru||'').trim(),key:d.prefix+'|'+it.trim()}});
 const INTERVALS=[0,1,3,7,14,30,60,120];
 function deckStats(l){
   const ws=wordsOf(l),now=Date.now();let due=0,fresh=0,learned=0;
@@ -351,9 +452,11 @@ function render(){
   renderStat();renderLevels();
   document.querySelectorAll('.tab').forEach(t=>t.setAttribute('aria-selected',t.dataset.tab===tab));
   const v=$('#view');
-  if(tab==='gram')route.v==='topic'?renderTopic(v):renderTopics(v);
+  if(tab==='gram')route.v==='topic'?renderTopic(v):route.v==='test'?renderTest(v):renderTopics(v);
   else if(tab==='rules')renderRules(v);
   else if(tab==='tables')renderTables(v);
+  else if(tab==='dict')renderDict(v);
+  else if(tab==='speak')route.v==='sp'?renderSpeak(v):renderSpeakList(v);
   else if(tab==='themes')route.v==='theme'?renderTheme(v):renderThemes(v);
   else if(tab==='cards')route.v==='session'?renderSession(v):route.v==='words'?renderWords(v):renderDeck(v);
   else renderTrain(v);
@@ -362,13 +465,29 @@ function render(){
 /* ============ grammar ============ */
 function renderTopics(v){
   const l=lvl();
-  v.innerHTML=heroOf(l)+`<div class="list" style="margin-top:14px">${l.topics.map((t,i)=>{const r=P.topics[t.id];const cls=!r?'':r.best===r.total?'done':'part';
-    return `<button class="topic" data-t="${t.id}"><span class="num">${i+1}</span><span class="tt">${esc(t.t)}</span><span class="badge ${cls}">${r?r.best+' su '+r.total:t.ex.length+' '+plural(t.ex.length,'esercizio','esercizi')}</span></button>`}).join('')}</div>`;
-  v.querySelector('.list').onclick=e=>{const b=e.target.closest('[data-t]');if(!b)return;route={v:'topic',id:b.dataset.t};render();scrollTo(0,0)};
+  v.innerHTML=trackerHTML()+heroOf(l)+`<div class="list" style="margin-top:14px">${l.topics.map((t,i)=>{const r=P.topics[t.id];const cls=!r?'':r.best===r.total?'done':'part';
+    const open=isOpen(t.id),ps=P.passed[t.id];
+    return `<button class="topic${open?'':' locked'}" data-t="${t.id}"><span class="num">${open?i+1:'🔒'}</span><span class="tt">${esc(t.t)}</span><span class="badge ${ps?'pass':cls}">${ps?'✓ test '+ps+'%':!open?'bloccato':r?r.best+' su '+r.total:t.ex.length+' '+plural(t.ex.length,'esercizio','esercizi')}</span></button>`}).join('')}</div>`;
+  v.insertAdjacentHTML('beforeend',`<div class="testbox" style="margin-top:14px"><b>Esame finale ${esc(l.id)}</b><p>${P.exams[l.id]?`Esame superato: <b>${P.exams[l.id]}%</b>. Livello ${esc(l.id)} completato!`:levelDone(l)?`Hai finito tutte le lezioni. Fai l’esame (${examItems(l).length} domande, serve il 75%)${GATE?' per aprire il livello successivo':''}.`:`Si apre quando avrai superato i test di tutte le lezioni del livello (${l.topics.filter(t=>P.passed[t.id]).length} su ${l.topics.length}).`}</p>${levelDone(l)||!GATE?`<button class="btn" id="exam" style="align-self:flex-start">${P.exams[l.id]?'Rifai l’esame':'Inizia l’esame'}</button>`:''}</div>`);
+  v.querySelector('.list').onclick=e=>{const b=e.target.closest('[data-t]');if(!b)return;if(!isOpen(b.dataset.t))return toast(lockMsg,3200);route={v:'topic',id:b.dataset.t};render();scrollTo(0,0)};
+  if($('#exam'))$('#exam').onclick=()=>{route={v:'test',id:'EXAM:'+l.id};render();scrollTo(0,0)};
+}
+function trackerHTML(){
+  const tg=ITA.target;if(!tg)return '';
+  const cur=LEVELS.find(l=>!P.exams[l.id])||LEVELS[LEVELS.length-1];
+  const n=cur.topics.length+1,d=cur.topics.filter(t=>P.passed[t.id]).length+(P.exams[cur.id]?1:0),pc=Math.round(d/n*100);
+  let msg='';
+  if(cur.id===tg.level&&!P.exams[cur.id]){const days=Math.max(1,Math.ceil((new Date(tg.date+'T23:59:59')-new Date())/DAY)),left=n-d,doneToday=Object.values(P.passedAt).filter(x=>x===today()).length,per=Math.ceil((left+doneToday)/days);msg=doneToday>=per?'Obiettivo di oggi raggiunto ✓':`Oggi: ${per-doneToday} ${plural(per-doneToday,'lezione','lezioni')}`}
+  return `<div class="tracker"><b class="tlv">${esc(cur.id)}</b><div class="progressbar"><i style="width:${pc}%"></i></div><b class="tpc">${pc}%</b>${msg?`<span class="tmsg">${msg}</span>`:''}</div>`;
 }
 function exHTML(x,i,tid){
   const [q,,opts]=x;
   const qh=esc(q).replace(/___/g,'<span class="blank"></span>');
+  if(opts==='order'){
+    const words=String(x[1]).split('/')[0].replace(/[.,!?;:«»]/g,'').split(/\s+/).filter(Boolean);
+    let chips=shuffle([...words,...(x[4]||[])]);if(chips.join(' ')===words.join(' ')&&chips.length>1)chips=chips.reverse();
+    return `<div class="ex" data-i="${i}"${tid?` data-rule="${esc(tid)}"`:''}><div class="q">${qh}</div><div class="build"><div class="line" data-ph="Tocca le parole nell’ordine giusto"></div><div class="chips">${chips.map(w=>`<button type="button" class="chip">${esc(w)}</button>`).join('')}</div><div class="ans"><button class="btn ghost bcheck" type="button">Controlla</button><button class="btn ghost bclear" type="button">Ricomincia</button><button class="btn ghost idk" type="button">Non lo so</button></div></div><div class="fb" hidden></div></div>`;
+  }
   const ans=opts?`<div class="ans">${opts.map(o=>`<button class="opt" type="button" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div>`
     :`<form class="ans"><input autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Risposta" lang="ru"><button class="btn ghost kbbtn" type="button" title="Tastiera cirillica" aria-label="Tastiera cirillica">⌨ абв</button><button class="btn ghost">Controlla</button><button class="btn ghost idk" type="button">Non lo so</button></form>`;
   return `<div class="ex" data-i="${i}"${tid?` data-rule="${esc(tid)}"`:''}><div class="q">${qh}</div>${ans}<div class="fb" hidden></div></div>`;
@@ -380,6 +499,7 @@ function feedback(card,x,res,given){
   if(res==='bad')t=given?`Hai risposto: <b>${esc(given)}</b>. Giusto: <b>${esc(first)}</b>.`:`Risposta giusta: <b>${esc(first)}</b>.`;
   else if(res==='accent')t=`Quasi giusto: <b>${esc(first)}</b>.`;
   else t='Giusto!';
+  if(res!=='bad')petPop();
   if(expl)t+=(res==='bad'?'<br>Perché: ':' ')+esc(expl);
   card.querySelectorAll('input,button').forEach(el=>el.disabled=true);
   const kbx=card.querySelector('.kb');if(kbx)kbx.remove();
@@ -392,6 +512,11 @@ function wireExercises(root,list,onDone){
     const f=card.querySelector('form');
     if(f)f.onsubmit=e=>{e.preventDefault();const inp=f.querySelector('input');const r=check(inp.value,x[1]);if(!r){inp.focus();return}feedback(card,x,r,inp.value.trim());onDone()};
     const idk=card.querySelector('.idk');if(idk)idk.onclick=()=>{feedback(card,x,'bad','');onDone()};
+    const bl=card.querySelector('.build');
+    if(bl){const line=bl.querySelector('.line'),pool=bl.querySelector('.chips');
+      bl.addEventListener('click',e=>{const c=e.target.closest('.chip');if(!c||c.disabled)return;(c.parentElement===pool?line:pool).appendChild(c)});
+      bl.querySelector('.bclear').onclick=()=>[...line.children].forEach(c=>pool.appendChild(c));
+      bl.querySelector('.bcheck').onclick=()=>{const g=[...line.children].map(c=>c.textContent).join(' ');if(!g)return toast('Prima componi la frase');const r=check(g,x[1]);feedback(card,x,r==='bad'?'bad':'ok',g);onDone()};}
     card.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{
       const r=check(b.dataset.o,x[1]);
       card.querySelectorAll('.opt').forEach(o=>{if(check(o.dataset.o,x[1])==='ok')o.classList.add('right')});
@@ -404,15 +529,23 @@ function renderTopic(v){
   let l=lvl(),t=l.topics.find(x=>x.id===route.id);
   if(!t){const L=LEVELS.find(L=>L.topics.some(x=>x.id===route.id));if(L){P.level=L.id;l=L;t=L.topics.find(x=>x.id===route.id)}}
   if(!t){route={v:'list'};return render()}
+  if(!isOpen(t.id)){toast(lockMsg,3200);route={v:'list'};return render()}
   const idx=l.topics.indexOf(t),next=l.topics[idx+1];
-  const body=t.b.replace(/<table>/g,'<div class="tablewrap"><table>').replace(/<\/table>/g,'</table></div>');
+  const body=ruleOf(t).replace(/<table>/g,'<div class="tablewrap"><table>').replace(/<\/table>/g,'</table></div>');
   v.innerHTML=`<div class="wrap" style="gap:14px">
     <button class="back" id="back">← ${esc(l.id)}: tutti gli argomenti</button>
     <h2>${esc(t.t)}</h2>
+    ${rlangSeg(t)}
     <div class="rule">${body}</div>
+    ${moreHTML(t.id)}
+    ${t.words?`<h3>Parole della lezione (${wordsOf(deckOfTopic(t)).length})</h3><div class="words">${wordsOf(deckOfTopic(t)).map(w=>`<div class="w${P.cards[w.key]&&P.cards[w.key].b>=4?' learned':''}"><b lang="ru">${esc(w.it)}</b><span>${esc(w.ru)}</span></div>`).join('')}</div><button class="btn ghost" id="learnT" style="align-self:flex-start">Impara le parole con le flashcard</button>`:''}
     <h3>Esercizi</h3>
     <div class="exs">${t.ex.map((x,i)=>exHTML(x,i,t.id)).join('')}</div>
-    <div class="score" id="score" hidden></div></div>`;
+    <div class="score" id="score" hidden></div>
+    <h3>Test</h3>
+    <div class="testbox"><p>${P.passed[t.id]?`Test superato: <b>${P.passed[t.id]}%</b>. Puoi rifarlo quando vuoi.`:'Quando hai capito l’argomento, fai il test. Servono almeno il 75% di risposte giuste.'}${GATE&&!P.passed[t.id]?' Poi si aprirà la lezione successiva.':''}</p><button class="btn" id="startTest" style="align-self:flex-start">Inizia il test (${testOf(t).length} domande)</button></div></div>`;
+  if($('#learnT'))$('#learnT').onclick=()=>{P.deck='G:'+t.id;LS.set('rus.progress',P);tab='cards';LS.set('rus.tab',tab);route={v:'list'};render();scrollTo(0,0)};
+  $('#startTest').onclick=()=>{route={v:'test',id:t.id};render();scrollTo(0,0)};
   $('#back').onclick=()=>{route={v:'list'};render()};
   const exs=v.querySelector('.exs');
   wireExercises(exs,t.ex,()=>{
@@ -421,10 +554,38 @@ function renderTopic(v){
     const good=done.filter(c=>c.dataset.done!=='bad').length,prev=P.topics[t.id];
     P.topics[t.id]={best:Math.max(good,prev?prev.best:0),total:cards.length,at:Date.now()};save();
     const s=$('#score');s.hidden=false;
-    s.innerHTML=`<strong>${good} / ${cards.length}</strong><span>${good===cards.length?'Ottimo, argomento imparato!':good>=cards.length*.7?'Bene. Rivedi gli errori ancora una volta.':'Rileggi la regola e riprova.'}</span>
-      <button class="btn ghost" id="again">Ricomincia</button>${next?`<button class="btn" id="next">Avanti: ${esc(next.t)}</button>`:''}`;
+    s.innerHTML=`${good===cards.length?winHTML():''}<strong>${good} / ${cards.length}</strong><span>${good===cards.length?'Ottimo, argomento imparato!':good>=cards.length*.7?'Bene. Rivedi gli errori ancora una volta.':'Rileggi la regola e riprova.'}</span>
+      <button class="btn ghost" id="again">Ricomincia</button><button class="btn" id="toTest">Vai al test</button>`;
     $('#again').onclick=()=>{render();scrollTo(0,0)};
-    if(next)$('#next').onclick=()=>{route={v:'topic',id:next.id};render();scrollTo(0,0)};
+    $('#toTest').onclick=()=>{route={v:'test',id:t.id};render();scrollTo(0,0)};
+  });
+}
+function testOf(t){return t.test&&t.test.length?t.test:t.ex.slice(-Math.min(10,t.ex.length))}
+function renderTest(v){
+  let t=null,l=null,exam=String(route.id).startsWith('EXAM:');
+  if(exam){l=LEVELS.find(L=>'EXAM:'+L.id===route.id);if(!l||(GATE&&!levelDone(l))){route={v:'list'};return render()}t={id:route.id,t:'esame finale '+l.id}}
+  else LEVELS.forEach(L=>L.topics.forEach(x=>{if(x.id===route.id){t=x;l=L}}));
+  if(!t||(!exam&&!isOpen(t.id))){route={v:'list'};return render()}
+  const items=exam?shuffle(examItems(l)):shuffle(testOf(t)),i=exam?ORDER.indexOf(l.topics[l.topics.length-1]):ORDER.indexOf(t),next=ORDER[i+1];
+  v.innerHTML=`<div class="wrap" style="gap:14px">
+    <button class="back" id="back">← Alla lezione</button>
+    <h2>Test: ${esc(t.t)}</h2>
+    <p style="margin:0;color:var(--muted)">${items.length} domande. Per superarlo servono almeno ${Math.ceil(items.length*PASS)} risposte giuste (75%).</p>
+    <div class="exs">${items.map((x,k)=>exHTML(x,k,t.id)).join('')}</div>
+    <div class="score" id="score" hidden></div></div>`;
+  $('#back').onclick=()=>{route=exam?{v:'list'}:{v:'topic',id:t.id};render();scrollTo(0,0)};
+  const exs=v.querySelector('.exs');
+  wireExercises(exs,items,()=>{
+    const cards=[...exs.querySelectorAll('.ex')],done=cards.filter(c=>c.dataset.done);
+    if(done.length<cards.length)return;
+    const good=done.filter(c=>c.dataset.done!=='bad').length,pct=Math.round(good/cards.length*100),ok=good/cards.length>=PASS-1e-9;
+    if(ok){if(exam)P.exams[l.id]=Math.max(pct,P.exams[l.id]||0);else{if(!P.passed[t.id])P.passedAt[t.id]=today();P.passed[t.id]=Math.max(pct,P.passed[t.id]||0)}}save();
+    const s=$('#score');s.hidden=false;
+    s.innerHTML=`${ok?winHTML():''}<strong>${pct}%</strong><span>${ok?'Test superato!'+(next&&GATE?' La lezione successiva è aperta.':''):'Meno del 75%. Rileggi la regola e riprova: le domande saranno in un altro ordine.'}</span>
+      <button class="btn ghost" id="again">${ok?'Rifai il test':'Riprova'}</button>${ok&&next?`<button class="btn" id="next">Avanti: ${esc(next.t)}</button>`:`<button class="btn" id="rule">Alla regola</button>`}`;
+    $('#again').onclick=()=>{render();scrollTo(0,0)};
+    if($('#next'))$('#next').onclick=()=>{P.level=LEVELS.find(L=>L.topics.includes(next)).id;route={v:'topic',id:next.id};render();scrollTo(0,0)};
+    if($('#rule'))$('#rule').onclick=()=>{route=exam?{v:'list'}:{v:'topic',id:t.id};render();scrollTo(0,0)};
   });
 }
 
@@ -432,7 +593,7 @@ function renderTopic(v){
 let session=null;
 function renderDeck(v){
   const d=curDeck(),st=deckStats(d),newToday=Math.min(10,st.fresh),total=st.due+newToday;
-  const opts=[deckOfLevel(lvl()),...THEMES.map(deckOfTheme)].map(x=>`<option value="${x.id}" ${x.id===d.id?'selected':''}>${esc(x.name)}</option>`).join('');
+  const opts=[deckOfLevel(lvl()),...lvl().topics.filter(t=>t.words).map(deckOfTopic),...(ITA.vocab||[]).map(x=>({id:'V:'+x.id,name:'Vocabolario: '+x.t})),...THEMES.map(deckOfTheme)].map(x=>`<option value="${x.id}" ${x.id===d.id?'selected':''}>${esc(x.name)}</option>`).join('');
   v.innerHTML=`<div class="wrap" style="gap:14px"><div class="deck">
     <label class="row" style="gap:8px"><span style="color:var(--muted);font-size:14px">Mazzo:</span><select class="decksel" id="deckSel">${opts}</select></label>
     <div class="nums"><div><b>${st.due}</b><span>da ripassare</span></div><div><b>${st.fresh}</b><span>nuove</span></div><div><b>${st.learned}</b><span>imparate su ${st.ws.length}</span></div></div>
@@ -504,11 +665,11 @@ function renderRules(v){
   v.innerHTML=`<div class="wrap" style="gap:18px">${heroOf(l)}
     <p style="margin:0;color:var(--muted)">Tutte le regole del livello ${esc(l.id)} in una pagina. Tocca un argomento per andarci, oppure apri gli esercizi sotto la regola.</p>
     <nav class="toc">${l.topics.map(t=>`<a href="#r-${t.id}" data-jump="${t.id}">${esc(t.t)}</a>`).join('')}</nav>
-    ${l.topics.map(t=>`<section class="rsec" id="r-${t.id}"><h2>${esc(t.t)}</h2><div class="rule">${tableWrap(t.b)}</div>
+    ${l.topics.map(t=>`<section class="rsec" id="r-${t.id}"><h2>${esc(t.t)}</h2>${rlangSeg(t)}<div class="rule">${tableWrap(ruleOf(t))}</div>${moreHTML(t.id)}
       <button class="btn ghost" style="align-self:flex-start" data-go="${t.id}">Esercizi sull'argomento (${t.ex.length})</button></section>`).join('')}
   </div>`;
   v.querySelectorAll('[data-jump]').forEach(a=>a.onclick=e=>{e.preventDefault();document.getElementById('r-'+a.dataset.jump).scrollIntoView({behavior:'smooth'})});
-  v.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{tab='gram';LS.set('rus.tab',tab);route={v:'topic',id:b.dataset.go};render();scrollTo(0,0)});
+  v.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{if(!isOpen(b.dataset.go))return toast(lockMsg,3200);tab='gram';LS.set('rus.tab',tab);route={v:'topic',id:b.dataset.go};render();scrollTo(0,0)});
 }
 
 /* ============ tables ============ */
@@ -523,12 +684,67 @@ function renderTables(v){
   v.querySelectorAll('[data-tj]').forEach(a=>a.onclick=e=>{e.preventDefault();document.getElementById('tb-'+a.dataset.tj).scrollIntoView({behavior:'smooth'})});
 }
 
+/* ============ speaking ============ */
+const SPEAK=ITA.speak||[];
+if(SPEAK.length)document.querySelector('[data-tab=speak]').hidden=false;else if(tab==='speak')tab='gram';
+function renderSpeakList(v){
+  v.innerHTML=`<div class="wrap" style="gap:12px"><p style="margin:0;color:var(--muted)">Costruzioni pronte per esprimere i tuoi pensieri. Prima ascolta e leggi le frasi, poi componi le tue.</p>
+    <div class="list">${SPEAK.map((x,i)=>{const r=P.topics['S:'+x.id];const cls=!r?'':r.best===r.total?'done':'part';return `<button class="topic" data-sp="${x.id}"><span class="num">${i+1}</span><span class="tt">${esc(x.t)} <span class="lvtag">${esc(x.lvl)}</span></span><span class="badge ${cls}">${r?r.best+' / '+r.total:x.ex.length+' ✎'}</span></button>`}).join('')}</div></div>`;
+  v.querySelector('.list').onclick=e=>{const b=e.target.closest('[data-sp]');if(!b)return;route={v:'sp',id:b.dataset.sp};render();scrollTo(0,0)};
+}
+function renderSpeak(v){
+  const x=SPEAK.find(s=>s.id===route.id);if(!x){route={v:'list'};return render()}
+  const i=SPEAK.indexOf(x),next=SPEAK[i+1];
+  v.innerHTML=`<div class="wrap" style="gap:14px"><button class="back" id="back">← Tutte le costruzioni</button>
+    <div><span class="lvtag">${esc(x.lvl)}</span><h2>${esc(x.t)}</h2><p style="margin:4px 0 0;color:var(--muted)">${esc(x.intro||'')}</p></div>
+    <h3>Costruzioni</h3>
+    <div class="phr">${x.patterns.map(([a,b])=>`<div>${sayBtn(a)}<b lang="${ITA.tablesLang||'it'}">${esc(a)}</b><span>${esc(b)}</span></div>`).join('')}</div>
+    <h3>Pratica</h3>
+    <div class="exs">${x.ex.map((e,k)=>exHTML(e,k)).join('')}</div>
+    <div class="score" id="score" hidden></div></div>`;
+  $('#back').onclick=()=>{route={v:'list'};render()};
+  const exs=v.querySelector('.exs');
+  wireExercises(exs,x.ex,()=>{
+    const cards=[...exs.querySelectorAll('.ex')],done=cards.filter(c=>c.dataset.done);
+    if(done.length<cards.length)return;
+    const good=done.filter(c=>c.dataset.done!=='bad').length,key='S:'+x.id,prev=P.topics[key];
+    P.topics[key]={best:Math.max(good,prev?prev.best:0),total:cards.length,at:Date.now()};save();
+    const s=$('#score');s.hidden=false;
+    s.innerHTML=`${good===cards.length?winHTML():''}<strong>${good} / ${cards.length}</strong><span>${good===cards.length?'Ottimo!':'Riprova.'}</span><button class="btn ghost" id="again">Ricomincia</button>${next?`<button class="btn" id="next">Avanti: ${esc(next.t)}</button>`:''}`;
+    $('#again').onclick=()=>{render();scrollTo(0,0)};
+    if(next)$('#next').onclick=()=>{route={v:'sp',id:next.id};render();scrollTo(0,0)};
+  });
+}
+
+/* ============ dictionary ============ */
+let dictQ='',dictG=LS.get('rus.dictG','all');
+const fold=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ё/g,'е');
+function dictAll(){const out=[];LEVELS.forEach(l=>{l.topics.filter(t=>t.words).forEach(t=>wordsOf(deckOfTopic(t)).forEach(w=>out.push({...w,g:'L:'+l.id,gn:'Livello '+l.id+' · '+t.t})));if(l.words)wordsOf({words:l.words,prefix:l.id}).forEach(w=>out.push({...w,g:'L:'+l.id,gn:'Livello '+l.id+' · '+l.name}))});(ITA.vocab||[]).forEach(d=>wordsOf({words:d.words,prefix:'V:'+d.id}).forEach(w=>out.push({...w,g:'V:'+d.id,gn:'Vocabolario: '+d.t})));THEMES.forEach(t=>wordsOf(deckOfTheme(t)).forEach(w=>out.push({...w,g:'T:'+t.id,gn:'Tema: '+t.t})));return out}
+function renderDict(v){
+  const opts=[['all','Tutte le parole'],...LEVELS.map(l=>['L:'+l.id,'Livello '+l.id]),...(ITA.vocab||[]).map(d=>['V:'+d.id,'Vocabolario: '+d.t]),...THEMES.map(t=>['T:'+t.id,'Tema: '+t.t])];
+  v.innerHTML=`<div class="wrap" style="gap:14px">
+    <p style="margin:0;color:var(--muted)">Tutte le parole del corso con la traduzione, per livelli e per temi. Puoi cercare in russo o in italiano.</p>
+    <div class="dtools"><input id="dq" type="search" placeholder="Cerca una parola…" aria-label="Cerca una parola" autocomplete="off" autocapitalize="off" spellcheck="false"><select class="decksel" id="dg" aria-label="Sezione">${opts.map(([k,n])=>`<option value="${k}" ${k===dictG?'selected':''}>${esc(n)}</option>`).join('')}</select></div>
+    <div id="dres"></div></div>`;
+  const q=$('#dq');q.value=dictQ;
+  const draw=()=>{
+    const f=fold(dictQ.trim());let ws=dictAll();
+    if(dictG!=='all')ws=ws.filter(w=>w.g===dictG);
+    if(f)ws=ws.filter(w=>fold(w.it).includes(f)||fold(w.ru).includes(f));
+    const groups=[];ws.forEach(w=>{let g=groups[groups.length-1];if(!g||g.k!==w.g){g={k:w.g,n:w.gn,ws:[]};groups.push(g)}g.ws.push(w)});
+    $('#dres').innerHTML=`<p class="dcount" style="margin:0 0 10px">${ws.length} ${plural(ws.length,'parola','parole')}</p>`+(ws.length?groups.map(g=>`<section class="dgroup" style="margin-bottom:16px"><h3>${esc(g.n)}</h3><div class="dlist">${g.ws.map(w=>`<div class="dw">${sayBtn(w.it)||'<i></i>'}<b lang="${ITA.tablesLang||'it'}">${esc(w.it)}</b><span>${esc(w.ru)}</span></div>`).join('')}</div></section>`).join(''):'<p style="color:var(--muted)">Nessun risultato.</p>');
+  };
+  q.oninput=()=>{dictQ=q.value;draw()};
+  $('#dg').onchange=e=>{dictG=e.target.value;LS.set('rus.dictG',dictG);draw()};
+  draw();
+}
+
 /* ============ themes ============ */
 function renderThemes(v){
   v.innerHTML=`<div class="wrap" style="gap:12px"><p style="margin:0;color:var(--muted)">Lezioni a tema: un testo con traduzione, frasi utili, parole per le flashcard ed esercizi. Il livello è indicativo, tutte le lezioni sono aperte.</p>
-    <div class="tgrid">${THEMES.map(t=>{const r=P.topics['T:'+t.id];const cls=!r?'':r.best===r.total?'done':'part';
-      return `<button class="tcard" data-th="${t.id}"><span class="pic">${ART.themes[t.id]||''}</span><span class="tbody"><span class="lvtag">${esc(t.lvl)}</span><b>${esc(t.t)}</b><i lang="ru">${esc(t.it)}</i><span class="badge ${cls}">${r?'esercizi: '+r.best+' su '+r.total:'da iniziare'}</span></span></button>`}).join('')}</div></div>`;
-  v.querySelector('.tgrid').onclick=e=>{const b=e.target.closest('[data-th]');if(!b)return;route={v:'theme',id:b.dataset.th};render();scrollTo(0,0)};
+    ${[...new Set(THEMES.map(t=>t.cat||'Vita quotidiana'))].map(cat=>`<h2 class="tcat">${esc(cat)}</h2><div class="tgrid">${THEMES.filter(t=>(t.cat||'Vita quotidiana')===cat).map(t=>{const r=P.topics['T:'+t.id];const cls=!r?'':r.best===r.total?'done':'part';
+      return `<button class="tcard" data-th="${t.id}"><span class="pic">${ART.themes[t.id]||''}</span><span class="tbody"><span class="lvtag">${esc(t.lvl)}</span><b>${esc(t.t)}</b><i lang="ru">${esc(t.it)}</i><span class="badge ${cls}">${r?'esercizi: '+r.best+' su '+r.total:'da iniziare'}</span></span></button>`}).join('')}</div>`).join('')}</div>`;
+  v.querySelector('.wrap').onclick=e=>{const b=e.target.closest('[data-th]');if(!b)return;route={v:'theme',id:b.dataset.th};render();scrollTo(0,0)};
 }
 function renderTheme(v){
   const t=THEMES.find(x=>x.id===route.id);if(!t){route={v:'list'};return render()}
@@ -560,7 +776,7 @@ function renderTheme(v){
     const good=done.filter(c=>c.dataset.done!=='bad').length,key='T:'+t.id,prev=P.topics[key];
     P.topics[key]={best:Math.max(good,prev?prev.best:0),total:cards.length,at:Date.now()};save();
     const s=$('#score');s.hidden=false;
-    s.innerHTML=`<strong>${good} / ${cards.length}</strong><span>${good===cards.length?'Ottimo!':'Puoi rivedere gli errori qui sopra.'}</span><button class="btn ghost" id="again">Ricomincia</button>${next?`<button class="btn" id="next">Avanti: ${esc(next.t)}</button>`:''}`;
+    s.innerHTML=`${good===cards.length?winHTML():''}<strong>${good} / ${cards.length}</strong><span>${good===cards.length?'Ottimo!':'Puoi rivedere gli errori qui sopra.'}</span><button class="btn ghost" id="again">Ricomincia</button>${next?`<button class="btn" id="next">Avanti: ${esc(next.t)}</button>`:''}`;
     $('#again').onclick=()=>{render();scrollTo(0,0)};
     if(next)$('#next').onclick=()=>{route={v:'theme',id:next.id};render();scrollTo(0,0)};
   });
@@ -569,7 +785,8 @@ function renderTheme(v){
 /* ============ training ============ */
 function renderTrain(v){
   const l=lvl();
-  const pool=[];l.topics.forEach(t=>t.ex.forEach(x=>pool.push({x,t:t.t,id:t.id})));
+  const pool=[];l.topics.filter(t=>isOpen(t.id)).forEach(t=>t.ex.forEach(x=>pool.push({x,t:t.t,id:t.id})));
+  if(!pool.length){v.innerHTML=`<p style="color:var(--muted)">${lockMsg}</p>`;return}
   const pick=pool.sort(()=>Math.random()-.5).slice(0,10);
   v.innerHTML=`<div class="wrap" style="gap:12px"><p style="margin:0;color:var(--muted)">10 esercizi a caso da tutti gli argomenti del livello ${esc(l.id)}. Sopra ognuno è scritto a quale argomento appartiene.</p>
     <div class="exs">${pick.map((p,i)=>exHTML(p.x,i,p.id).replace('<div class="q">',`<div style="font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em">${esc(p.t)}</div><div class="q">`)).join('')}</div>
@@ -580,7 +797,7 @@ function renderTrain(v){
     if(done.length<cards.length)return;
     const good=done.filter(c=>c.dataset.done!=='bad').length;save();
     const s=$('#score');s.hidden=false;
-    s.innerHTML=`<strong>${good} / ${cards.length}</strong><span>${good===cards.length?'Nessun errore!':'Gli argomenti con errori li trovi nella scheda «Grammatica».'}</span><button class="btn" id="more">Altri 10 esercizi</button>`;
+    s.innerHTML=`${good===cards.length?winHTML():''}<strong>${good} / ${cards.length}</strong><span>${good===cards.length?'Nessun errore!':'Gli argomenti con errori li trovi nella scheda «Grammatica».'}</span><button class="btn" id="more">Altri 10 esercizi</button>`;
     $('#more').onclick=()=>{render();scrollTo(0,0)};
   });
 }

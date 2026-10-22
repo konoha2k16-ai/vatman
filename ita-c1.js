@@ -76,9 +76,9 @@ ex:[
 ['___ (finire) il lavoro, andammo al bar.','Finito'],
 ['___ (leggere) le lettere, le bruciò.','Lette'],
 ['___ (arrivare) a Roma, Giulia chiamò sua madre.','Arrivata'],
-['Dopo ___ (parlare) con il medico, mi sono calmata.','aver parlato/avere parlato'],
-['___ essendo tardi, continuammo a lavorare. (хотя)','Pur'],
-['Col ___ (passare) del tempo, ho capito.','passare']
+['Dopo ___ (parlare) con il medico, mi sono calmata.','aver parlato/avere parlato',null,'Dopo + infinito passato (aver + participio), quando il soggetto è lo stesso.'],
+['___ essendo tardi, continuammo a lavorare. (хотя)','Pur',null,'Pur + gerundio = «хотя, несмотря на то что».'],
+['Col ___ (passare) del tempo, ho capito.','passare',null,'Col passare del tempo = «со временем»: инфинитив как существительное.']
 ]}
 ],
 words:`la sfumatura|оттенок, нюанс

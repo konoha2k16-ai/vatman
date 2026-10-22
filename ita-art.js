@@ -115,3 +115,25 @@ ${[[14,22,C.white],[40,26,C.sea2],[62,30,C.pink],[246,32,C.white],[272,28,C.lemo
 
 ITA.art={levels:L,themes:T};
 })();
+// Illustrazioni per le lezioni A1.
+(function(){
+const T=(window.ITA&&ITA.art&&ITA.art.themes)||{};
+const C={sky:'#D6E6F2',warm:'#F5DCC4',red:'#C23B32',blue:'#2F5D8C',blue2:'#5C8BB8',green:'#3C7A4E',gold:'#E2B33C',cream:'#F6EBD9',dark:'#2A2A33',wood:'#9A6A43',snow:'#F4F7FA',pink:'#E9A6A6',night:'#1D2647',grey:'#8C8C94'};
+const svg=(b,bg)=>`<svg viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice"><rect width="320" height="180" fill="${bg||C.sky}"/>${b}</svg>`;
+const person=(x,c,h)=>`<circle cx="${x}" cy="${130-h}" r="13" fill="${C.cream}"/><path d="M${x-14} ${130-h+12} h28 v${h+10} h-28Z" rx="8" fill="${c}"/><rect x="${x-10}" y="140" width="8" height="22" fill="${C.dark}"/><rect x="${x+2}" y="140" width="8" height="22" fill="${C.dark}"/>`;
+const bubble=(x,y,w,txt,c)=>`<rect x="${x}" y="${y}" width="${w}" height="30" rx="12" fill="#fff"/><path d="M${x+18} ${y+29} l-6 10 l14 -10Z" fill="#fff"/><text x="${x+w/2}" y="${y+20}" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="${c||C.dark}">${txt}</text>`;
+const set=(k,v)=>{if(!T[k])T[k]=v};
+set('presentarsi',svg(`<rect y="160" width="320" height="20" fill="${C.green}"/>${person(110,C.blue,40)}${person(210,C.red,34)}${bubble(40,20,96,'Привет!',C.blue)}${bubble(188,34,84,'Ciao!',C.red)}`,C.warm));
+set('giornata',svg(`<rect width="160" height="180" fill="#F7E3B5"/><rect x="160" width="160" height="180" fill="${C.night}"/><circle cx="70" cy="60" r="22" fill="${C.gold}"/><circle cx="250" cy="56" r="18" fill="${C.snow}"/><circle cx="258" cy="50" r="16" fill="${C.night}"/>
+<circle cx="160" cy="104" r="50" fill="#fff" stroke="${C.dark}" stroke-width="5"/>${[...Array(12)].map((_,i)=>`<rect x="158" y="58" width="4" height="9" fill="${C.dark}" transform="rotate(${i*30} 160 104)"/>`).join('')}<path d="M160 104 v-30 M160 104 l22 10" stroke="${C.red}" stroke-width="5" stroke-linecap="round"/><circle cx="160" cy="104" r="5" fill="${C.dark}"/>`));
+set('citta',svg(`<rect y="150" width="320" height="30" fill="${C.grey}"/>${[[10,70,C.red],[70,96,C.cream],[140,60,C.blue2],[200,84,C.gold],[262,66,C.green]].map(([x,h,c])=>`<rect x="${x}" y="${150-h}" width="54" height="${h}" fill="${c}"/>${[...Array(Math.floor(h/22))].map((_,r)=>`<rect x="${x+9}" y="${158-h+r*22}" width="10" height="12" fill="#FBE9A9"/><rect x="${x+33}" y="${158-h+r*22}" width="10" height="12" fill="#FBE9A9"/>`).join('')}`).join('')}<circle cx="290" cy="40" r="16" fill="${C.red}"/><text x="290" y="47" text-anchor="middle" font-family="Arial" font-weight="700" font-size="20" fill="#fff">M</text>`));
+const cup=`<path d="M100 80 h90 l-10 60 q-2 10 -12 10 h-46 q-10 0 -12 -10Z" fill="#fff" stroke="${C.dark}" stroke-width="3"/><path d="M188 92 q26 0 20 22 q-4 12 -24 10" stroke="${C.dark}" stroke-width="5" fill="none"/><ellipse cx="145" cy="82" rx="42" ry="7" fill="#6B3E22"/>${[0,1,2].map(i=>`<path d="M${128+i*16} 66 q-8 -12 0 -24 q8 -12 0 -24" stroke="#fff" stroke-width="4" fill="none" opacity=".8" stroke-linecap="round"/>`).join('')}<ellipse cx="145" cy="152" rx="70" ry="8" fill="#fff" stroke="${C.dark}" stroke-width="2"/>`;
+set('caffe',svg(`<rect y="150" width="320" height="30" fill="${C.wood}"/>${cup}<ellipse cx="258" cy="140" rx="40" ry="12" fill="#fff"/>${[0,1,2].map(i=>`<ellipse cx="258" cy="${134-i*6}" rx="${30-i*2}" ry="8" fill="${i%2?C.gold:'#E8C06A'}"/>`).join('')}`,C.warm));
+set('bar',svg(`<rect y="150" width="320" height="30" fill="${C.wood}"/>${cup}<path d="M224 140 q36 -40 72 0 q-36 14 -72 0Z" fill="#E8B060" stroke="#B5793A" stroke-width="2"/>${[0,1,2,3].map(i=>`<path d="M${236+i*12} 132 q4 -14 8 -16" stroke="#B5793A" stroke-width="2" fill="none"/>`).join('')}`,C.warm));
+set('meteo',svg(`<rect width="160" height="90" fill="#E6F2DC"/><rect x="160" width="160" height="90" fill="#FBE3A6"/><rect y="90" width="160" height="90" fill="#F3D2B0"/><rect x="160" y="90" width="160" height="90" fill="${C.snow}"/>
+${[[40,60],[70,66],[100,58],[130,64]].map(([x,y])=>`<path d="M${x} 90 v-${90-y}" stroke="${C.green}" stroke-width="2"/><circle cx="${x}" cy="${y}" r="6" fill="${C.pink}"/>`).join('')}
+<circle cx="240" cy="44" r="22" fill="${C.gold}"/>${[...Array(8)].map((_,i)=>`<rect x="238" y="8" width="4" height="10" fill="${C.gold}" transform="rotate(${i*45} 240 44)"/>`).join('')}
+<g fill="#fff"><ellipse cx="80" cy="118" rx="34" ry="13"/><ellipse cx="96" cy="110" rx="20" ry="14"/></g>${[0,1,2,3,4].map(i=>`<path d="M${58+i*12} 136 l-4 12" stroke="${C.blue2}" stroke-width="3" stroke-linecap="round"/>`).join('')}<path d="M20 172 q8 -10 14 0 M130 170 q8 -12 14 0" stroke="#C7922A" stroke-width="5" fill="none"/>
+${[[190,110],[220,140],[250,105],[280,130],[300,160],[200,160],[260,165]].map(([x,y])=>`<g stroke="${C.blue2}" stroke-width="2"><path d="M${x-6} ${y} h12 M${x} ${y-6} v12 M${x-4} ${y-4} l8 8 M${x+4} ${y-4} l-8 8"/></g>`).join('')}`));
+if(window.ITA&&ITA.art)ITA.art.themes=T;
+})();

@@ -84,7 +84,7 @@ ex:[
 <tr><td>под- / от-</td><td>avvicinarsi / allontanarsi</td><td><i lang="ru">подойти к окну, отойти от окна</i></td></tr></table>
 <p>Preposizioni coerenti: <i lang="ru">в/на</i> (куда?) ↔ <i lang="ru">из/с</i> (откуда?); <i lang="ru">к</i> (da qualcuno) ↔ <i lang="ru">от</i> (da presso qualcuno).</p>`,
 ex:[
-['Марко ___ домой в 6 часов. (arrivò, a piedi)','пришёл/пришел',['ушёл','пришёл','вошёл'],'Arrivare = при-.'],
+['Джованни ___ домой в 6 часов. (arrivò, a piedi)','пришёл/пришел',['ушёл','пришёл','вошёл'],'Arrivare = при-.'],
 ['Анна ___ из комнаты. (uscì)','вышла',['вышла','вошла','ушла'],'Uscire = вы-.'],
 ['Они ___ в отпуск на море. (partirono, con mezzo)','уехали',['приехали','уехали','заехали'],'Andarsene = у-.'],
 ['Он ___ к окну. (si avvicinò)','подошёл/подошел',['подошёл','отошёл','перешёл'],'Avvicinarsi = под- + к.'],
@@ -107,14 +107,14 @@ ex:[
 ['___ мне, пожалуйста, воду! (porta qui, ты)','Принеси',['Принеси','Приведи','Привези'],'Portare un oggetto qui: принести → принеси.']]},
 {id:'r-b1-svoy',t:'Il possessivo свой',b:`
 <p><b>Свой</b> significa «il proprio» e si riferisce al <b>soggetto della frase</b>. Si declina come <i lang="ru">мой</i>: <i lang="ru">свой, своя, своё, свои</i>.</p>
-<p>Con la 3ª persona è obbligatorio quando il possessore è il soggetto: <i lang="ru">Марко любит свою жену.</i> (sua, di Marco). <i lang="ru">Марко любит его жену.</i> significa la moglie di un altro uomo!</p>
+<p>Con la 3ª persona è obbligatorio quando il possessore è il soggetto: <i lang="ru">Джованни любит свою жену.</i> (sua, di Giovanni). <i lang="ru">Джованни любит его жену.</i> significa la moglie di un altro uomo!</p>
 <p>Con la 1ª e 2ª persona <i lang="ru">свой</i> e <i lang="ru">мой/твой</i> sono entrambi possibili: <i lang="ru">Я люблю свою (мою) работу.</i></p>
 <p><i lang="ru">Свой</i> non si usa nel soggetto: <i lang="ru">Его жена работает.</i> (non «своя жена»).</p>`,
 ex:[
 ['Анна часто звонит ___ маме. (a sua madre, di Anna)','своей',['её','своей'],'Il possessore è il soggetto (Anna): свой → своей.'],
 ['Анна и ___ мама живут в Риме.','её',['её','своя'],'Nel soggetto non si usa свой.'],
-['Марко ищет ___ ключи. (le proprie)','свои',['его','свои'],'Possessore = soggetto: свои.'],
-['Я рассказал Марко о ___ поездке. (di Marco)','его',['его','своей'],'Il possessore (Marco) non è il soggetto (я): его.'],
+['Джованни ищет ___ ключи. (le proprie)','свои',['его','свои'],'Possessore = soggetto: свои.'],
+['Я рассказал Джованни о ___ поездке. (di Giovanni)','его',['его','своей'],'Il possessore (Giovanni) non è il soggetto (я): его.'],
 ['Они продали ___ машину. (la propria)','свою',['их','свою'],'Possessore = soggetto: свою.']]},
 {id:'r-b1-kotoryj',t:'Il relativo который',b:`
 <p><b>Который</b> = «che, il quale». Prende <b>genere e numero</b> dalla parola a cui si riferisce, ma il <b>caso</b> dal suo ruolo nella frase relativa.</p>

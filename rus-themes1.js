@@ -29,10 +29,10 @@ ex:[
 ['«Io e mio fratello» in russo: мы с ___.','братом',null,'Мы с + strumentale = «io e…»: мы с братом.'],
 ['Она ___ (sposata).','замужем',['женат','замужем'],'Per una donna: замужем; per un uomo: женат.']]},
 {id:'amore',t:'L\'amore e le relazioni',it:'Любовь и отношения',lvl:'A2',
-text:`Марко и Настя познакомились в интернете. Он живёт в Италии, она – в России. Сначала они просто переписывались, потом начали звонить друг другу каждый вечер. Через полгода Марко прилетел в Москву, и они наконец встретились.
-Жить на расстоянии непросто. Иногда они ссорятся, но всегда быстро мирятся. Вечером они вместе смотрят фильмы онлайн, а по выходным говорят часами. Настя учит итальянский, а Марко учит русский. Они мечтают жить вместе.`,
-tr:`Marco e Nastja si sono conosciuti su internet. Lui vive in Italia, lei in Russia. All'inizio si scrivevano soltanto, poi hanno cominciato a telefonarsi ogni sera. Dopo sei mesi Marco è volato a Mosca e finalmente si sono incontrati.
-Vivere a distanza non è facile. A volte litigano, ma fanno sempre pace in fretta. La sera guardano film insieme online e nel fine settimana parlano per ore. Nastja studia l'italiano e Marco studia il russo. Sognano di vivere insieme.`,
+text:`Джованни и Настя познакомились в интернете. Он живёт в Италии, она – в России. Сначала они просто переписывались, потом начали звонить друг другу каждый вечер. Через полгода Джованни прилетел в Москву, и они наконец встретились.
+Жить на расстоянии непросто. Иногда они ссорятся, но всегда быстро мирятся. Вечером они вместе смотрят фильмы онлайн, а по выходным говорят часами. Настя учит итальянский, а Джованни учит русский. Они мечтают жить вместе.`,
+tr:`Giovanni e Nastja si sono conosciuti su internet. Lui vive in Italia, lei in Russia. All'inizio si scrivevano soltanto, poi hanno cominciato a telefonarsi ogni sera. Dopo sei mesi Giovanni è volato a Mosca e finalmente si sono incontrati.
+Vivere a distanza non è facile. A volte litigano, ma fanno sempre pace in fretta. La sera guardano film insieme online e nel fine settimana parlano per ore. Nastja studia l'italiano e Giovanni studia il russo. Sognano di vivere insieme.`,
 phrases:[['Я тебя люблю.','Ti amo.'],['Я по тебе скучаю.','Mi manchi.'],['Ты мне нравишься.','Mi piaci.'],['Мы встречаемся.','Stiamo insieme.'],['Спокойной ночи, солнышко!','Buona notte, tesoro! (lett. «piccolo sole»)'],['Обнимаю и целую.','Ti abbraccio e ti bacio.']],
 words:`любо́вь|amore
 люби́ть|amare
@@ -50,10 +50,10 @@ words:`любо́вь|amore
 со́лнышко|tesoro (lett. piccolo sole)
 ко́тик|micino (vezzeggiativo)`,
 ex:[
-['Где Марко и Настя познакомились?','в интернете',['в Москве','в интернете','в Италии'],'«познакомились в интернете».'],
+['Где Джованни и Настя познакомились?','в интернете',['в Москве','в интернете','в Италии'],'«познакомились в интернете».'],
 ['«Mi piaci»: Ты мне ___.','нравишься',null,'Нравиться: chi piace va al nominativo (ты), a chi piace al dativo (мне).'],
 ['Они звонят ___ ___ каждый вечер. (l\'un l\'altro)','друг другу',null,'Звонить кому? → dativo: друг другу.'],
-['Марко влюбился ___ Настю.','в',['в','на','с'],'Влюбиться в + accusativo.'],
+['Джованни влюбился ___ Настю.','в',['в','на','с'],'Влюбиться в + accusativo.'],
 ['Они ссорятся, но быстро ___. (fanno pace)','мирятся',null,'Мириться = fare pace.'],
 ['«Ti amo» in russo:','Я тебя люблю',['Я тебе люблю','Я тебя люблю'],'Любить + accusativo: тебя.']]},
 {id:'cinema',t:'Il cinema russo',it:'Кино',lvl:'B1',
