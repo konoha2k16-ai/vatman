@@ -335,7 +335,18 @@ const plural=(n,a,b)=>n===1?a:b;
 
 /* ============ progress & sync ============ */
 let P=LS.get('rus.progress',null)||{v:1,updated:0,level:'A1',topics:{},cards:{},dir:'it',streak:{day:'',n:0}};
-P.topics=P.topics||{};P.cards=P.cards||{};
+const fixP=p=>{p=p||{};p.topics=p.topics||{};p.cards=p.cards||{};p.passed=p.passed||{};p.exams=p.exams||{};p.passedAt=p.passedAt||{};p.streak=p.streak||{day:'',n:0};p.updated=p.updated||0;return p};
+P=fixP(P);
+function mergeP(a,b){
+  a=fixP(a);b=fixP(b);
+  const o=JSON.parse(JSON.stringify(a.updated>=b.updated?a:b)),x=a.updated>=b.updated?b:a;
+  for(const k of ['passed','exams'])for(const id in x[k])o[k][id]=Math.max(o[k][id]||0,x[k][id]||0);
+  for(const id in x.passedAt)if(!o.passedAt[id]||x.passedAt[id]<o.passedAt[id])o.passedAt[id]=x.passedAt[id];
+  for(const id in x.topics){const t=x.topics[id],u=o.topics[id];if(!u||(t.best||0)>(u.best||0))o.topics[id]=t}
+  for(const id in x.cards){const c=x.cards[id],u=o.cards[id];if(!u||(c.b||0)>(u.b||0)||((c.b||0)===(u.b||0)&&(c.d||0)>(u.d||0)))o.cards[id]=c}
+  if((x.streak.day||'')>(o.streak.day||'')||((x.streak.day||'')===(o.streak.day||'')&&(x.streak.n||0)>(o.streak.n||0)))o.streak=x.streak;
+  o.updated=Math.max(a.updated,b.updated);return o;
+}
 const CFG=window.VATMAN_CONFIG||{};
 let sb=null;
 if(CFG.url&&CFG.key&&window.supabase&&window.supabase.createClient){try{sb=window.supabase.createClient(CFG.url.trim(),CFG.key.trim())}catch(e){}}
@@ -352,8 +363,8 @@ async function pull(){
     const r=await sb.rpc('load_items',{p_board:KEY});
     if(r.error)throw r.error;
     const it=(r.data||[]).find(x=>x&&x.id==='progress');
-    if(it&&it.p&&(it.p.updated||0)>(P.updated||0)){P=it.p;P.topics=P.topics||{};P.cards=P.cards||{};LS.set('rus.progress',P);render()}
-    else if((P.updated||0)>((it&&it.p&&it.p.updated)||0))push();
+    if(it&&it.p){const before=JSON.stringify(P),m=mergeP(P,it.p);P=m;LS.set('rus.progress',P);if(JSON.stringify(P)!==before&&!document.querySelector('.ex[data-done]'))render();if(JSON.stringify(P)!==JSON.stringify(fixP(it.p)))push()}
+    else if(P.updated)push();
     setDot('ok');
   }catch(e){console.error(e);setDot('err')}
 }
@@ -366,10 +377,15 @@ function save(){
 }
 async function push(){
   if(!sb)return;
-  try{const r=await sb.rpc('upsert_items',{p_board:KEY,p_items:[{id:'progress',type:'rus',p:P}]});if(r.error)throw r.error;setDot('ok')}
+  try{
+    const cur=await sb.rpc('load_items',{p_board:KEY});
+    const it=!cur.error&&(cur.data||[]).find(x=>x&&x.id==='progress');
+    if(it&&it.p){P=mergeP(P,it.p);LS.set('rus.progress',P)}
+    const r=await sb.rpc('upsert_items',{p_board:KEY,p_items:[{id:'progress',type:'rus',p:P}]});if(r.error)throw r.error;setDot('ok')}
   catch(e){console.error(e);setDot('err')}
 }
 window.addEventListener('pagehide',()=>{if(pushT){clearTimeout(pushT);push()}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){if(pushT){clearTimeout(pushT);pushT=null;push()}}else pull()});
 $('#syncBtn').onclick=()=>{
   $('#syncSheet').hidden=false;
   $('#syncText').textContent=sb?'Apri questo link sul telefono o su un altro computer: lì ritroverai gli stessi progressi, che da quel momento saranno condivisi. Non mandare il link a nessuno: con esso si possono modificare i tuoi progressi.':'Il database non è collegato, quindi i progressi restano solo in questo browser.';
@@ -386,6 +402,7 @@ const THEMES=ITA.themes||[];
 const TOPIC={};LEVELS.forEach(l=>l.topics.forEach(t=>TOPIC[t.id]=t));
 const MORE=ITA.more||{};
 P.passed=P.passed||{};
+if(ITA.gate&&!P.mig1){for(const id in P.topics){const r=P.topics[id];if(id.includes(':')||P.passed[id]||!r||!r.total)continue;if(r.best/r.total>=0.75){P.passed[id]=Math.round(r.best/r.total*100);P.passedAt[id]=P.passedAt[id]||'2000-01-01'}}P.mig1=1;LS.set('rus.progress',P)}
 const ORDER=[];LEVELS.forEach(l=>l.topics.forEach(t=>ORDER.push(t)));
 const GATE=!!ITA.gate,PASS=0.75;
 function isOpen(id){if(!GATE)return true;const i=ORDER.findIndex(t=>t.id===id);if(i<=0)return true;const L=LEVELS.find(l=>l.topics.some(t=>t.id===id));if(L.topics[0].id===id){const pi=LEVELS.indexOf(L)-1;return pi<0||!!P.exams[LEVELS[pi].id]}return !!P.passed[ORDER[i-1].id]}
